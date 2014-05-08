@@ -1,11 +1,11 @@
 %define major 0
 %define beta %{nil}
-%define scmrev 20140211
+%define scmrev 20140508
 %define libname %mklibname qtxdg %{major}
 %define devname %mklibname qtxdg -d
 
 Name: libqtxdg
-Version: 0.1
+Version: 0.7.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
 Release: 1
@@ -31,15 +31,21 @@ BuildRequires: cmake
 BuildRequires: ninja
 BuildRequires: qt4-devel
 BuildRequires: magic-devel
-Requires: %{libname} = %{EVRD}
 
 %description
 Library providing freedesktop.org specs implementations for Qt
 
+%package data
+Summary: Data files for %{name}
+Group: System/Libraries
+
+%description data
+Data files for %{name}
+
 %package -n %{libname}
 Summary: Library providing freedesktop.org specs implementations for Qt
 Group: System/Libraries
-Requires: %{name} = %{EVRD}
+Requires: %{name}-data = %{EVRD}
 
 %description -n %{libname}
 Library providing freedesktop.org specs implementations for Qt
@@ -69,7 +75,7 @@ DESTDIR="%{buildroot}" ninja -C build install
 # Fix up the pkgconfig file...
 sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
 
-%files
+%files data
 %dir %{_datadir}/libqtxdg
 %{expand:%(for lang in ar cs cs_CZ da da_DK de_DE el_GR eo es es_VE eu fi fr_FR hu id_ID it_IT ja lt nl pl_PL pt pt_BR ro_RO ru ru_RU sk_SK sl sr_RS th_TH tr uk zh_CN zh_TW; do echo %{_datadir}/libqtxdg/libqtxdg_$lang.qm; done)}
 
