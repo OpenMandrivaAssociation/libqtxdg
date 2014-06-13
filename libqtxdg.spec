@@ -8,7 +8,7 @@ Name: libqtxdg
 Version: 0.7.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 1
+Release: 2
 Source: %{name}-%{version}.tar.bz2
 %else
 Release: 0.%{scmrev}.1
