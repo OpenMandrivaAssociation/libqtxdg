@@ -12,18 +12,18 @@ Version: 0.8.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
 Release: 1
-Source: %{name}-%{version}.tar.bz2
+Source0: %{name}-%{version}.tar.bz2
 %else
 Release: 0.%{scmrev}.1
-Source: %{name}-%{scmrev}.tar.xz
+Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %else
 %if "%{scmrev}" == ""
 Release: 0.%{beta}.1
-Source: %{name}-%{version}%{beta}.tar.bz2
+Source0: %{name}-%{version}%{beta}.tar.bz2
 %else
 Release: 0.%{beta}.%{scmrev}.1
-Source: %{name}-%{scmrev}.tar.xz
+Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
 Summary: Library providing freedesktop.org specs implementations for Qt
@@ -31,6 +31,7 @@ URL: http://lxde.org/
 License: GPL
 Group: System/Libraries
 BuildRequires: cmake
+BuildRequires: cmake(Qt5LinguistTools)
 BuildRequires: ninja
 BuildRequires: qt5-devel
 BuildRequires: magic-devel
