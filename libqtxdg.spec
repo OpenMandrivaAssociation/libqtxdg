@@ -1,6 +1,6 @@
-%define major 0
+%define major 1
 %define beta %{nil}
-%define scmrev 20140730
+%define scmrev 20141017
 %define libname %mklibname qt5xdg %{major}
 %define devname %mklibname qt5xdg -d
 
@@ -8,7 +8,7 @@
 %define qt4devname %mklibname qtxdg -d
 
 Name: libqtxdg
-Version: 0.8.0
+Version: 1.0.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
 Release: 1
@@ -70,7 +70,7 @@ freedesktop.org specs implementations for Qt.
 %if "%{scmrev}" == ""
 %setup -q -n %{name}-%{version}%{beta}
 %else
-%setup -q -n %{name}
+%setup -q -n %{name}-%{scmrev}
 %endif
 %cmake -G Ninja -DUSE_QT5=ON -DCMAKE_MAKE_PROGRAM=ninja
 
