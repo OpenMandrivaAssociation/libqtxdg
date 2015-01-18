@@ -14,7 +14,7 @@ Version: 1.0.0
 Release: 2
 Source0: %{name}-%{version}.tar.bz2
 %else
-Release: 0.%{scmrev}.1
+Release: 0.%{scmrev}.2
 Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %else
@@ -27,7 +27,7 @@ Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
 Summary: Library providing freedesktop.org specs implementations for Qt
-URL: http://lxde.org/
+URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
 BuildRequires: cmake
