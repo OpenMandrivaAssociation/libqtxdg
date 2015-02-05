@@ -1,6 +1,6 @@
 %define major 1
 %define beta %{nil}
-%define scmrev 20141017
+%define scmrev 20150205
 %define libname %mklibname qt5xdg %{major}
 %define devname %mklibname qt5xdg -d
 
@@ -15,7 +15,9 @@ Release: 2
 Source0: %{name}-%{version}.tar.bz2
 %else
 Release: 0.%{scmrev}.2
-Source0: %{name}-%{scmrev}.tar.xz
+# git clone https://github.com/lxde/libqtxdg.git
+# git archive --format=tar --prefix libqtxdg-1.0.0-$(date +%Y%m%d)/ HEAD | xz -vf > libqtxdg-1.0.0-$(date +%Y%m%d).tar.xz
+Source0: %{name}-%{version}-%{scmrev}.tar.xz
 %endif
 %else
 %if "%{scmrev}" == ""
@@ -37,7 +39,7 @@ BuildRequires: qt5-devel
 BuildRequires: magic-devel
 
 %description
-Library providing freedesktop.org specs implementations for Qt
+Library providing freedesktop.org specs implementations for Qt.
 
 %package data
 Summary: Data files for %{name}
@@ -45,7 +47,7 @@ Group: System/Libraries
 Requires: %{libname} = %{EVRD}
 
 %description data
-Data files for %{name}
+Data files for %{name}.
 
 %package -n %{libname}
 Summary: Library providing freedesktop.org specs implementations for Qt
@@ -54,7 +56,7 @@ Requires: %{name}-data = %{EVRD}
 %rename %{qt4libname}
 
 %description -n %{libname}
-Library providing freedesktop.org specs implementations for Qt
+Library providing freedesktop.org specs implementations for Qt.
 
 %package -n %{devname}
 Summary: Development files for %{name}
@@ -70,7 +72,7 @@ freedesktop.org specs implementations for Qt.
 %if "%{scmrev}" == ""
 %setup -q -n %{name}-%{version}%{beta}
 %else
-%setup -q -n %{name}-%{scmrev}
+%setup -q -n %{name}-%{version}-%{scmrev}
 %endif
 %cmake -G Ninja -DUSE_QT5=ON -DCMAKE_MAKE_PROGRAM=ninja
 
