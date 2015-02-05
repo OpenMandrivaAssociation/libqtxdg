@@ -37,22 +37,14 @@ BuildRequires: cmake(Qt5LinguistTools)
 BuildRequires: ninja
 BuildRequires: qt5-devel
 BuildRequires: magic-devel
+%rename %{name}-data
 
 %description
 Library providing freedesktop.org specs implementations for Qt.
 
-%package data
-Summary: Data files for %{name}
-Group: System/Libraries
-Requires: %{libname} = %{EVRD}
-
-%description data
-Data files for %{name}.
-
 %package -n %{libname}
 Summary: Library providing freedesktop.org specs implementations for Qt
 Group: System/Libraries
-Requires: %{name}-data = %{EVRD}
 %rename %{qt4libname}
 
 %description -n %{libname}
@@ -83,10 +75,6 @@ ninja -C build
 DESTDIR="%{buildroot}" ninja -C build install
 # Fix up the pkgconfig file...
 sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
-
-%files data
-%dir %{_datadir}/libqt5xdg
-%{expand:%(for lang in ar cs cs_CZ da da_DK de_DE el_GR eo es es_VE eu fi fr_FR hu id_ID it_IT ja lt nl pl_PL pt pt_BR ro_RO ru ru_RU sk_SK sl sr_RS th_TH tr uk zh_CN zh_TW; do echo %{_datadir}/libqt5xdg/libqtxdg_$lang.qm; done)}
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}*
