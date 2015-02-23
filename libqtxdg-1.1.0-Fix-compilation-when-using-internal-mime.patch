@@ -1,0 +1,12 @@
+diff -Naur libqtxdg-1.1.0/xdgmime.h libqtxdg-1.1.0.tpg/xdgmime.h
+--- libqtxdg-1.1.0/xdgmime.h	2015-02-07 17:23:22.000000000 +0000
++++ libqtxdg-1.1.0.tpg/xdgmime.h	2015-02-23 22:57:08.659951376 +0000
+@@ -39,7 +39,7 @@
+ 
+ /*! @brief The XdgMimeInfo class provides mime information about file.
+  */
+-class QTXDG_DEPRECATED QTXQD_API XdgMimeInfo
++class QTXDG_DEPRECATED QTXDG_API XdgMimeInfo
+ {
+ public:
+     /// Constructs a XdgMimeInfo with the mimeType type.

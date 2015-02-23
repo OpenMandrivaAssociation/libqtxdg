@@ -1,6 +1,6 @@
 %define major 1
 %define beta %{nil}
-%define scmrev 20150205
+%define scmrev %{nil}
 %define libname %mklibname qt5xdg %{major}
 %define devname %mklibname qt5xdg -d
 
@@ -8,13 +8,13 @@
 %define qt4devname %mklibname qtxdg -d
 
 Name: libqtxdg
-Version: 1.0.0
+Version: 1.1.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 2
-Source0: %{name}-%{version}.tar.bz2
+Release: 1
+Source0: %{name}-%{version}.tar.xz
 %else
-Release: 0.%{scmrev}.2
+Release: 0.%{scmrev}.1
 # git clone https://github.com/lxde/libqtxdg.git
 # git archive --format=tar --prefix libqtxdg-1.0.0-$(date +%Y%m%d)/ HEAD | xz -vf > libqtxdg-1.0.0-$(date +%Y%m%d).tar.xz
 Source0: %{name}-%{version}-%{scmrev}.tar.xz
@@ -22,12 +22,13 @@ Source0: %{name}-%{version}-%{scmrev}.tar.xz
 %else
 %if "%{scmrev}" == ""
 Release: 0.%{beta}.1
-Source0: %{name}-%{version}%{beta}.tar.bz2
+Source0: %{name}-%{version}%{beta}.tar.xz
 %else
 Release: 0.%{beta}.%{scmrev}.1
 Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
+Patch0: libqtxdg-1.1.0-Fix-compilation-when-using-internal-mime.patch
 Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL
@@ -66,6 +67,7 @@ freedesktop.org specs implementations for Qt.
 %else
 %setup -q -n %{name}-%{version}-%{scmrev}
 %endif
+%apply_patches
 %cmake -G Ninja -DUSE_QT5=ON -DCMAKE_MAKE_PROGRAM=ninja
 
 %build
