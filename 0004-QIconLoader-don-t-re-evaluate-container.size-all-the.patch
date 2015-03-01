@@ -1,0 +1,43 @@
+From 5d819ece873ffa17d2cf21bf7696fc3d757c5860 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Mon, 2 Feb 2015 10:41:03 -0800
+Subject: [PATCH 04/15] QIconLoader: don't re-evaluate container.size() all the
+ time (II)
+
+Experience shows that the compiler does not recognize the
+size() call as a constant expression, so help it along.
+
+Port of commit
+https://qt.gitorious.org/qt/qtbase/commits/6244665faa0c703efa29943832d8c90726f7e8b1
+---
+ qiconfix/qiconloader.cpp | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/qiconfix/qiconloader.cpp b/qiconfix/qiconloader.cpp
+index 5c1ecc7..1f04b90 100644
+--- a/qiconfix/qiconloader.cpp
++++ b/qiconfix/qiconloader.cpp
+@@ -550,8 +550,10 @@ QIconLoaderEngineEntry *QIconLoaderEngineFixed::entryForSize(const QSize &size)
+     // Note that m_entries are sorted so that png-files
+     // come first
+ 
++    const int numEntries = m_entries.size();
++
+     // Search for exact matches first
+-    for (int i = 0; i < m_entries.count(); ++i) {
++    for (int i = 0; i < numEntries; ++i) {
+         QIconLoaderEngineEntry *entry = m_entries.at(i);
+         if (directoryMatchesSize(entry->dir, iconsize)) {
+             return entry;
+@@ -561,7 +563,7 @@ QIconLoaderEngineEntry *QIconLoaderEngineFixed::entryForSize(const QSize &size)
+     // Find the minimum distance icon
+     int minimalSize = INT_MAX;
+     QIconLoaderEngineEntry *closestMatch = 0;
+-    for (int i = 0; i < m_entries.count(); ++i) {
++    for (int i = 0; i < numEntries; ++i) {
+         QIconLoaderEngineEntry *entry = m_entries.at(i);
+         int distance = directorySizeDistance(entry->dir, iconsize);
+         if (distance < minimalSize) {
+-- 
+1.9.0
+

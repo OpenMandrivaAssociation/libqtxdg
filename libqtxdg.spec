@@ -11,7 +11,7 @@ Name: libqtxdg
 Version: 1.1.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 1
+Release: 2
 Source0: %{name}-%{version}.tar.xz
 %else
 Release: 0.%{scmrev}.1
@@ -28,7 +28,21 @@ Release: 0.%{beta}.%{scmrev}.1
 Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
-Patch0: libqtxdg-1.1.0-Fix-compilation-when-using-internal-mime.patch
+Patch0: 0001-QIconLoader-remove-an-unused-variable.patch.patch
+Patch1: 0002-QIconLoader-remove-another-unused-variable.patch
+Patch2: 0003-QIconLoader-don-t-re-evaluate-container.size-all-the.patch
+Patch3: 0004-QIconLoader-don-t-re-evaluate-container.size-all-the.patch
+Patch4: 0005-QIconLoader-replace-while-empty-delete-takeLast-with.patch
+Patch5: 0006-QIconLoader-mark-a-helper-type-as-movable.patch
+Patch6: 0007-QIconLoader-mark-virtual-overrides.patch
+Patch7: 0008-QIconLoader-replace-an-inefficient-QList-with-a-QVec.patch
+Patch8: 0009-QIconLoader-don-t-inherit-QObject.patch
+Patch9: 0010-QIconLoader-enable-an-easy-case-of-transactional-pro.patch
+Patch10: 0011-Use-QPlatformTheme-SystemIconFallbackThemeName-in-st.patch
+Patch11: 0012-Update-license-headers-and-add-new-license-files.patch
+Patch12: 0013-Avoid-adding-empty-parent-icon-theme.patch
+Patch13: 0014-Fix-compilation-when-using-internal-mime.patch
+Patch14: 0015-Makes-needed-helper-functions-available-to-tests.patch
 Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL

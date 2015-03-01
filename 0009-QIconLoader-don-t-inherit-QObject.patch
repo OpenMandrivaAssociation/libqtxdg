@@ -1,0 +1,31 @@
+From fbfa9af25c75a2ede4b9e1d341c5d4b35cd37847 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Mon, 2 Feb 2015 11:36:07 -0800
+Subject: [PATCH 09/15] QIconLoader: don't inherit QObject
+
+QIconLoader did not use the services from QObject and the
+Q_OBJECT macro was missing, too, so external code couldn't
+have used it in a qobject_cast or inherits(), either.
+
+Port of commit
+https://qt.gitorious.org/qt/qtbase/commits/7c6a4276f0330238d3d9438dc58a528c6cd4c80a
+---
+ qiconfix/qiconloader_p.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/qiconfix/qiconloader_p.h b/qiconfix/qiconloader_p.h
+index dc74b3e..8d65f6a 100644
+--- a/qiconfix/qiconloader_p.h
++++ b/qiconfix/qiconloader_p.h
+@@ -162,7 +162,7 @@ private:
+     bool m_valid;
+ };
+ 
+-class Q_GUI_EXPORT QIconLoader : public QObject
++class Q_GUI_EXPORT QIconLoader
+ {
+ public:
+     QIconLoader();
+-- 
+1.9.0
+

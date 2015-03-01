@@ -1,0 +1,141 @@
+From dce043f2c29c096f950f9d04d71ad2e8e705f36b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Tue, 10 Feb 2015 15:06:43 -0800
+Subject: [PATCH 15/15] Makes needed helper functions available to tests
+
+Commits f2fde114628bf85fe107363532f67f49a5a3ccf9 and it's Clang equivalent:
+e082464be5cd48d16c43c6de1cfd4366fb1bed37 hide unneeded symbols.
+
+The tests need these two functions tough. We export them only if the tests
+are built.
+The -Wall definition was already added in the top CMakeLists.txt
+
+Closes #42.
+---
+ CMakeLists.txt      | 2 ++
+ test/CMakeLists.txt | 4 +++-
+ test/qtxdg_test.cpp | 6 +-----
+ xdgdesktopfile.cpp  | 4 +---
+ xdgdesktopfile_p.h  | 7 +++++++
+ xdgmacros.h         | 8 ++++++++
+ 6 files changed, 22 insertions(+), 9 deletions(-)
+ create mode 100644 xdgdesktopfile_p.h
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 3a1b7b3..a69aa4c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -132,6 +132,7 @@ set(libqtxdg_PRIVATE_H_FILES
+     xdgmenu_p.h
+     xdgmenureader.h
+     xdgmenurules.h
++    xdgdesktopfile_p.h
+ )
+ 
+ set(libqtxdg_CPP_FILES
+@@ -288,6 +289,7 @@ create_pkgconfig_file(${QTXDGX_LIBRARY_NAME}
+ 
+ if(BUILD_TESTS)
+     enable_testing()
++    add_definitions(-DQTXDG_TESTS=1)
+     add_subdirectory(test)
+ else()
+     message(STATUS "")
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index 1606cbe..b5792b5 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -13,7 +13,9 @@ set(LIBRARIES
+ )
+ 
+ 
+-add_definitions ( -Wall )
++if (BUILD_TESTS)
++    add_definitions(-DQTXDG_BUILDING_TESTS=1)
++endif()
+ 
+ if (USE_QT5)
+     qt5_wrap_cpp(MOCS ${${PROJECT_NAME}_MOCS})
+diff --git a/test/qtxdg_test.cpp b/test/qtxdg_test.cpp
+index 271be08..8b20d44 100644
+--- a/test/qtxdg_test.cpp
++++ b/test/qtxdg_test.cpp
+@@ -1,6 +1,7 @@
+ #include "qtxdg_test.h"
+ 
+ #include "xdgdesktopfile.h"
++#include "xdgdesktopfile_p.h"
+ #include "xdgdirs.h"
+ 
+ #include <QtTest>
+@@ -65,11 +66,6 @@ void QtXdgTest::testMeldComparison()
+     compare("application/x-meld-comparison");
+ }
+ 
+-// Implemented in xdgdesktopfile.cpp
+-bool readDesktopFile(QIODevice & device, QSettings::SettingsMap & map);
+-bool writeDesktopFile(QIODevice & device, const QSettings::SettingsMap & map);
+-
+-
+ void QtXdgTest::testCustomFormat()
+ {
+     QSettings::Format desktopFormat = QSettings::registerFormat("list", readDesktopFile, writeDesktopFile);
+diff --git a/xdgdesktopfile.cpp b/xdgdesktopfile.cpp
+index e9695cb..a3d7bf2 100644
+--- a/xdgdesktopfile.cpp
++++ b/xdgdesktopfile.cpp
+@@ -34,6 +34,7 @@
+ #include <stdlib.h>
+ 
+ #include "xdgdesktopfile.h"
++#include "xdgdesktopfile_p.h"
+ 
+ #ifdef HAVE_QTMIMETYPES
+ #include <QMimeDatabase>
+@@ -82,13 +83,10 @@ QString findDesktopFile(const QString& dirName, const QString& desktopName);
+ QString findDesktopFile(const QString& desktopName);
+ static QStringList parseCombinedArgString(const QString &program);
+ bool read(const QString &prefix);
+-bool readDesktopFile(QIODevice & device, QSettings::SettingsMap & map);
+ void replaceVar(QString &str, const QString &varName, const QString &after);
+ QString &unEscape(QString& str);
+ QString &unEscapeExec(QString& str);
+-bool writeDesktopFile(QIODevice & device, const QSettings::SettingsMap & map);
+ void loadMimeCacheDir(const QString& dirName, QHash<QString, QList<XdgDesktopFile*> > & cache);
+-
+ /************************************************
+ 
+  ************************************************/
+diff --git a/xdgdesktopfile_p.h b/xdgdesktopfile_p.h
+new file mode 100644
+index 0000000..b28ec33
+--- /dev/null
++++ b/xdgdesktopfile_p.h
+@@ -0,0 +1,7 @@
++#ifndef XDGDESKTOPFILE_P_H
++#define XDGDESKTOPFILE_P_H
++
++QTXDG_AUTOTEST bool readDesktopFile(QIODevice & device, QSettings::SettingsMap & map);
++QTXDG_AUTOTEST bool writeDesktopFile(QIODevice & device, const QSettings::SettingsMap & map);
++
++#endif // XDGDESKTOPFILE_P_H
+diff --git a/xdgmacros.h b/xdgmacros.h
+index e2e5489..4c7fe1c 100644
+--- a/xdgmacros.h
++++ b/xdgmacros.h
+@@ -34,4 +34,12 @@
+     #define QTXDG_API    Q_DECL_IMPORT
+ #endif
+ 
++#if defined(QTXDG_COMPILATION) && defined(QTXDG_BUILDING_TESTS)
++#    define QTXDG_AUTOTEST Q_DECL_IMPORT
++#elif defined(QTXDG_COMPILATION) && defined(QTXDG_TESTS)
++#    define QTXDG_AUTOTEST Q_DECL_EXPORT
++#else
++#    define QTXDG_AUTOTEST
++#endif
++
+ #endif // QTXDG_MACROS_H
+-- 
+1.9.0
+

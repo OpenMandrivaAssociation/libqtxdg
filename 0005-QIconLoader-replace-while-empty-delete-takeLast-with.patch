@@ -1,0 +1,47 @@
+From 3e7530df040013f028eeadf8b4638b160339c30b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Mon, 2 Feb 2015 10:49:07 -0800
+Subject: [PATCH 05/15] QIconLoader: replace while(!empty()) delete takeLast()
+ with qDeleteAll()
+
+There's no calling back into QIconLoaderEngine from the QIconLoaderEngineEntry
+dtors, so don't bother slicing off one element by one from the container as
+they are deleted, the more so as m_entires is either move-assigned or deleted
+right after these loops.
+
+Port of commit
+https://qt.gitorious.org/qt/qtbase/commits/28f740425654855fcbdb13108c3fdb2c03a16340
+---
+ qiconfix/qiconloader.cpp | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/qiconfix/qiconloader.cpp b/qiconfix/qiconloader.cpp
+index 1f04b90..956d57a 100644
+--- a/qiconfix/qiconloader.cpp
++++ b/qiconfix/qiconloader.cpp
+@@ -435,9 +435,7 @@ QIconLoaderEngineFixed::QIconLoaderEngineFixed(const QString& iconName)
+ 
+ QIconLoaderEngineFixed::~QIconLoaderEngineFixed()
+ {
+-    while (!m_entries.isEmpty())
+-        delete m_entries.takeLast();
+-    Q_ASSERT(m_entries.size() == 0);
++    qDeleteAll(m_entries);
+ }
+ 
+ QIconLoaderEngineFixed::QIconLoaderEngineFixed(const QIconLoaderEngineFixed &other)
+@@ -473,10 +471,8 @@ void QIconLoaderEngineFixed::ensureLoaded()
+ {
+     if (!(QIconLoader::instance()->themeKey() == m_key)) {
+ 
+-        while (!m_entries.isEmpty())
+-            delete m_entries.takeLast();
++        qDeleteAll(m_entries);
+ 
+-        Q_ASSERT(m_entries.size() == 0);
+         m_entries = QIconLoader::instance()->loadIcon(m_iconName);
+         m_key = QIconLoader::instance()->themeKey();
+     }
+-- 
+1.9.0
+
