@@ -11,7 +11,7 @@ Name: libqtxdg
 Version: 1.1.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 2
+Release: 3
 Source0: %{name}-%{version}.tar.xz
 %else
 Release: 0.%{scmrev}.1
@@ -50,8 +50,8 @@ Group: System/Libraries
 BuildRequires: cmake
 BuildRequires: cmake(Qt5LinguistTools)
 BuildRequires: ninja
-BuildRequires: qt5-devel
-BuildRequires: magic-devel
+BuildRequires: cmake(Qt5Widgets)
+BuildRequires: cmake(Qt5Xml)
 %rename %{name}-data
 
 %description
