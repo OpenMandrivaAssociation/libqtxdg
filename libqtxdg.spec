@@ -48,6 +48,7 @@ URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
 BuildRequires: cmake
+BuildRequires: qmake5
 BuildRequires: cmake(Qt5LinguistTools)
 BuildRequires: ninja
 BuildRequires: cmake(Qt5Widgets)
