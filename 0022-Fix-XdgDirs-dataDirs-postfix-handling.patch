@@ -1,0 +1,35 @@
+From a748cbbf99bdb64983232e34afcfbb85f987ab52 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Fri, 6 Mar 2015 15:23:56 -0800
+Subject: [PATCH 22/27] Fix XdgDirs::dataDirs() postfix handling
+
+The postfix was being appended to the dir list instead of being
+concatenated to the dir list entries.
+---
+ xdgdirs.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/xdgdirs.cpp b/xdgdirs.cpp
+index d86a25f..efd74a9 100644
+--- a/xdgdirs.cpp
++++ b/xdgdirs.cpp
+@@ -29,6 +29,7 @@
+ #include "xdgdirs.h"
+ #include <stdlib.h>
+ #include <QDir>
++#include <QStringBuilder> // for the % operator
+ #include <QDebug>
+ 
+ static const QString userDirectoryString[8] =
+@@ -260,7 +261,7 @@ QStringList XdgDirs::configDirs(const QString &postfix)
+     QStringList dirs = xdgDirList("XDG_CONFIG_DIRS", postfix);
+     if (dirs.isEmpty())
+     {
+-        dirs << "/etc/xdg" << postfix;
++        dirs << QLatin1String("/etc/xdg") % postfix;
+     }
+ 
+     return dirs;
+-- 
+1.9.0
+

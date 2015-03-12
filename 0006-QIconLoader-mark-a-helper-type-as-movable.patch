@@ -1,7 +1,7 @@
 From 42c78622d25c8cd3c154cb12ae1e39ea3b1e954e Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Mon, 2 Feb 2015 11:12:08 -0800
-Subject: [PATCH 06/15] QIconLoader: mark a helper type as movable
+Subject: [PATCH 06/27] QIconLoader: mark a helper type as movable
 
 QIconDirInfo is held in Qt containers, so reap the performance
 benefit of a movable type.

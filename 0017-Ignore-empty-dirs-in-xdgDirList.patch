@@ -1,0 +1,30 @@
+From 5058cd61611a712ed11ba6e998e9444e041b5d43 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Mon, 2 Mar 2015 14:07:45 -0800
+Subject: [PATCH 17/27] Ignore empty dirs in xdgDirList()
+
+We also don't append the postfix. It just doesn't make sense.
+---
+ xdgdirs.cpp | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/xdgdirs.cpp b/xdgdirs.cpp
+index d1539a4..d86a25f 100644
+--- a/xdgdirs.cpp
++++ b/xdgdirs.cpp
+@@ -98,7 +98,11 @@ QStringList xdgDirList(const QString &envVar, const QString &postfix)
+     for (QStringList::Iterator i=dirs.begin(); i!=dirs.end(); ++i)
+     {
+         fixBashShortcuts((*i));
+-        *i += postfix;
++        if (!(*i).isEmpty()) {
++            if (!(*i).endsWith(QLatin1Char('/')))
++                *i += "/";
++            *i += postfix;
++        }
+     }
+     return dirs;
+ }
+-- 
+1.9.0
+

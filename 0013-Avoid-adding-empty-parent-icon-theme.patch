@@ -1,7 +1,7 @@
 From 3b2b71bef46d3565db921c6a943c83ac0e8926b0 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Mon, 2 Feb 2015 11:55:43 -0800
-Subject: [PATCH 13/15] Avoid adding empty parent icon theme
+Subject: [PATCH 13/27] Avoid adding empty parent icon theme
 
 "Icon Theme/Inherits" may assign an empty value, e.g. Flattr icon
 theme

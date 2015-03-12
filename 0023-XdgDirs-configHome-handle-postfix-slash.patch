@@ -1,0 +1,28 @@
+From 6bc863d2391f52506bccf3a56ef3b32f9fbebb3f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Mon, 9 Mar 2015 09:00:45 -0700
+Subject: [PATCH 23/27] XdgDirs::configHome() handle postfix slash
+
+postfix should start with an slash.
+---
+ xdgdirs.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/xdgdirs.cpp b/xdgdirs.cpp
+index efd74a9..fcabba4 100644
+--- a/xdgdirs.cpp
++++ b/xdgdirs.cpp
+@@ -245,8 +245,8 @@ QStringList XdgDirs::dataDirs(const QString &postfix)
+     QStringList dirs = xdgDirList("XDG_DATA_DIRS", postfix);
+     if (dirs.isEmpty())
+     {
+-        dirs << "/usr/local/share/" + postfix;
+-        dirs << "/usr/share/" + postfix;
++        dirs << QLatin1String("/usr/local/share") % postfix;
++        dirs << QLatin1String("/usr/share") % postfix;
+     }
+ 
+     return dirs;
+-- 
+1.9.0
+

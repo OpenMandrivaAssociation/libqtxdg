@@ -1,7 +1,7 @@
 From 04630a0f1f7ccee3f3eac11ed6abb3a75c7595a0 Mon Sep 17 00:00:00 2001
 From: Helio Chissini de Castro <helio@kde.org>
 Date: Sun, 15 Feb 2015 11:18:06 -0200
-Subject: [PATCH 14/15] - Fix compilation when using internal mime
+Subject: [PATCH 15/27] - Fix compilation when using internal mime
 
 Signed-off-by: Helio Chissini de Castro <helio@kde.org>
 ---

@@ -1,7 +1,7 @@
 From fbfa9af25c75a2ede4b9e1d341c5d4b35cd37847 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Mon, 2 Feb 2015 11:36:07 -0800
-Subject: [PATCH 09/15] QIconLoader: don't inherit QObject
+Subject: [PATCH 09/27] QIconLoader: don't inherit QObject
 
 QIconLoader did not use the services from QObject and the
 Q_OBJECT macro was missing, too, so external code couldn't

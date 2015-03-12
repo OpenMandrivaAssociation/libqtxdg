@@ -1,7 +1,7 @@
 From 548c282ec0146ed6ae2bbdad5518acb08a9c4258 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Mon, 2 Feb 2015 11:45:59 -0800
-Subject: [PATCH 11/15] Use QPlatformTheme::SystemIconFallbackThemeName in
+Subject: [PATCH 11/27] Use QPlatformTheme::SystemIconFallbackThemeName in
  static QString fallbackTheme()
 
 Instead of QPlatformTheme::SystemIconThemeName

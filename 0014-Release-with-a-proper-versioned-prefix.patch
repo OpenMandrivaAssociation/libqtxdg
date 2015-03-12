@@ -1,0 +1,42 @@
+From e5bc7d7db6ed9b3630098a27f10204549785eec0 Mon Sep 17 00:00:00 2001
+From: Jerome Leclanche <jerome@leclan.ch>
+Date: Sun, 8 Feb 2015 10:17:28 +0100
+Subject: [PATCH 14/27] Release with a proper versioned prefix
+
+---
+ release.sh | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/release.sh b/release.sh
+index a6ffec2..98b997f 100755
+--- a/release.sh
++++ b/release.sh
+@@ -1,5 +1,6 @@
+ PROJECT="libqtxdg"
+ version="$1"
++prefix=$PROJECT-$version
+ shift
+ 
+ if [[ -z $version ]]; then
+@@ -8,12 +9,12 @@ if [[ -z $version ]]; then
+ fi
+ 
+ mkdir -p "dist/$version"
+-echo "Creating $PROJECT.tar.gz"
+-git archive -9 --format tar.gz $version --prefix="$PROJECT/" > "dist/$version/$PROJECT.tar.gz"
+-gpg --armor --detach-sign "dist/$version/$PROJECT.tar.gz"
+-echo "Creating $PROJECT.tar.xz"
+-git archive -9 --format tar.xz $version --prefix="$PROJECT/" > "dist/$version/$PROJECT.tar.xz"
+-gpg --armor --detach-sign "dist/$version/$PROJECT.tar.xz"
++echo "Creating $prefix.tar.gz"
++git archive -9 --format tar.gz $version --prefix="$prefix/" > "dist/$version/$prefix.tar.gz"
++gpg --armor --detach-sign "dist/$version/$prefix.tar.gz"
++echo "Creating $prefix.tar.xz"
++git archive -9 --format tar.xz $version --prefix="$prefix/" > "dist/$version/$prefix.tar.xz"
++gpg --armor --detach-sign "dist/$version/$prefix.tar.xz"
+ cd "dist/$version"
+ 
+ sha1sum --tag *.tar.gz *.tar.xz >> CHECKSUMS
+-- 
+1.9.0
+

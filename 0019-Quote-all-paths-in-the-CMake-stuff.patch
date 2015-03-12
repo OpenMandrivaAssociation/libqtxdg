@@ -1,0 +1,282 @@
+From 0eb9ffb016ae52d6d63171c5b964f28f16e4eb56 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Thu, 5 Mar 2015 05:24:55 -0800
+Subject: [PATCH 19/27] Quote all paths in the CMake stuff
+
+It breaks if they have spaces.
+---
+ CMakeLists.txt                      | 50 ++++++++++++++++++-------------------
+ cmake/FindLibSuffix.cmake           |  8 +++---
+ cmake/create_pkgconfig_file.cmake   |  2 +-
+ cmake/create_portable_headers.cmake |  4 +--
+ cmake/qt5xdg-config.cmake.in        | 12 ++++-----
+ cmake/qt5xdg_use.cmake              | 10 ++++----
+ cmake/qtxdg-config.cmake.in         | 10 ++++----
+ 7 files changed, 48 insertions(+), 48 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c0e9e79..2c9f20f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -23,7 +23,7 @@ endif()
+ include(GNUInstallDirs)
+ 
+ # additional cmake files
+-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
++set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+ 
+ set (MAJOR_VERSION 1)
+ set (MINOR_VERSION 0)
+@@ -63,9 +63,9 @@ if (USE_QT5)
+     set(QTXDGX_PKG_CONFIG_REQUIRES "Qt5Core, Qt5Xml, Qt5Widgets")
+ 
+     include_directories(
+-        ${Qt5Widgets_INCLUDE_DIRS}
+-        ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
+-        ${Qt5Xml_INCLUDE_DIRS}
++        "${Qt5Widgets_INCLUDE_DIRS}"
++        "${Qt5Gui_PRIVATE_INCLUDE_DIRS}"
++        "${Qt5Xml_INCLUDE_DIRS}"
+     )
+     add_definitions(${Qt5Core_DEFINITIONS})
+ #    set(CMAKE_CXX_FLAGS
+@@ -179,10 +179,10 @@ if (NOT USE_QT5)
+         pkg_check_modules(QTMIMETYPES REQUIRED
+             QtMimeTypes
+         )
+-        include_directories(${QTMIMETYPES_INCLUDE_DIRS})
++        include_directories("${QTMIMETYPES_INCLUDE_DIRS}")
+         set(QTXDGX_PKG_CONFIG_REQUIRES "QtCore, QtXml, QtMimeTypes")
+         set(MIMETYPES_PROVIDER_LIBRARY ${QTMIMETYPES_LIBRARIES})
+-        link_directories(${QTMIMETYPES_LIBRARY_DIRS})
++        link_directories("${QTMIMETYPES_LIBRARY_DIRS}")
+         add_definitions("-DHAVE_QTMIMETYPES")
+     else()
+         # Use libmagic
+@@ -203,7 +203,7 @@ if (USE_QTMIMETYPES OR USE_QT5)
+ endif()
+ 
+ 
+-set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/lib${QTXDGX_FILE_NAME})
++set(APP_SHARE_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/lib${QTXDGX_FILE_NAME}")
+ add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
+ 
+ 
+@@ -221,38 +221,38 @@ set(QTXDG_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}")
+ if (USE_QT5)
+     set(QTXDG_PRIVATE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/qiconfix")
+     configure_file(
+-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/qt5xdg-config.cmake.in
+-        ${CMAKE_CURRENT_BINARY_DIR}/cmake/${QTXDGX_FILE_NAME}-config.cmake
++        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/qt5xdg-config.cmake.in"
++        "${CMAKE_CURRENT_BINARY_DIR}/cmake/${QTXDGX_FILE_NAME}-config.cmake"
+         @ONLY
+     )
+ else()
+     configure_file(
+-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/qtxdg-config.cmake.in
+-        ${CMAKE_CURRENT_BINARY_DIR}/cmake/${QTXDGX_FILE_NAME}-config.cmake
++        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/qtxdg-config.cmake.in"
++        "${CMAKE_CURRENT_BINARY_DIR}/cmake/${QTXDGX_FILE_NAME}-config.cmake"
+         @ONLY
+     )
+ endif()
+ 
+ configure_file(
+-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${QTXDGX_FILE_NAME}_use.cmake
+-    ${CMAKE_CURRENT_BINARY_DIR}/cmake/${QTXDGX_FILE_NAME}_use.cmake
++    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${QTXDGX_FILE_NAME}_use.cmake"
++    "${CMAKE_CURRENT_BINARY_DIR}/cmake/${QTXDGX_FILE_NAME}_use.cmake"
+     @ONLY
+ )
+ 
+ # Instalable ...............................
+-set(QTXDG_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/${QTXDGX_FILE_NAME})
++set(QTXDG_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/${QTXDGX_FILE_NAME}")
+ 
+ if (USE_QT5)
+-    set(QTXDG_PRIVATE_INCLUDE_DIR ${QTXDG_INCLUDE_DIR}/${QTXDG_VERSION_STRING})
++    set(QTXDG_PRIVATE_INCLUDE_DIR "${QTXDG_INCLUDE_DIR}/${QTXDG_VERSION_STRING}")
+     configure_file(
+-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/qt5xdg-config.cmake.in
+-        ${CMAKE_CURRENT_BINARY_DIR}/${QTXDGX_FILE_NAME}-config.cmake
++        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/qt5xdg-config.cmake.in"
++        "${CMAKE_CURRENT_BINARY_DIR}/${QTXDGX_FILE_NAME}-config.cmake"
+         @ONLY
+     )
+ else()
+     configure_file(
+-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/qtxdg-config.cmake.in
+-        ${CMAKE_CURRENT_BINARY_DIR}/${QTXDGX_FILE_NAME}-config.cmake
++        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/qtxdg-config.cmake.in"
++        "${CMAKE_CURRENT_BINARY_DIR}/${QTXDGX_FILE_NAME}-config.cmake"
+         @ONLY
+     )
+ endif()
+@@ -297,8 +297,8 @@ set_target_properties(${QTXDGX_LIBRARY_NAME} PROPERTIES
+ include(create_portable_headers)
+ create_portable_headers(libqtxdg_PORTABLE_HEADERS ${libqtxdg_PUBLIC_CLASSES})
+ 
+-install(TARGETS ${QTXDGX_LIBRARY_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+-install(FILES ${libqtxdg_PUBLIC_H_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${QTXDGX_FILE_NAME})
++install(TARGETS ${QTXDGX_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_LIBDIR}")
++install(FILES ${libqtxdg_PUBLIC_H_FILES} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${QTXDGX_FILE_NAME}")
+ 
+ if (USE_QT5)
+     install(FILES
+@@ -308,9 +308,9 @@ if (USE_QT5)
+     )
+ endif()
+ 
+-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${QTXDGX_FILE_NAME}-config.cmake DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/${QTXDGX_FILE_NAME})
+-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cmake/${QTXDGX_FILE_NAME}_use.cmake DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/${QTXDGX_FILE_NAME})
+-install(FILES ${libqtxdg_PORTABLE_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${QTXDGX_FILE_NAME})
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${QTXDGX_FILE_NAME}-config.cmake" DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTXDGX_FILE_NAME}")
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/${QTXDGX_FILE_NAME}_use.cmake" DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTXDGX_FILE_NAME}")
++install(FILES ${libqtxdg_PORTABLE_HEADERS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${QTXDGX_FILE_NAME}")
+ 
+ include(create_pkgconfig_file)
+ create_pkgconfig_file(${QTXDGX_LIBRARY_NAME}
+@@ -338,7 +338,7 @@ configure_file(
+     IMMEDIATE @ONLY)
+ 
+ add_custom_target(uninstall
+-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
++    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
+ 
+ 
+ # building tarball with CPack -------------------------------------------------
+diff --git a/cmake/FindLibSuffix.cmake b/cmake/FindLibSuffix.cmake
+index c99659f..f7a8c3b 100644
+--- a/cmake/FindLibSuffix.cmake
++++ b/cmake/FindLibSuffix.cmake
+@@ -7,12 +7,12 @@ IF(NOT DEFINED LIB_SUFFIX AND LIB_SUFFIX_ALREADY_SET)
+     # All 32bit system have empty lib suffix
+     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+         # If there is lib64 dir, set suffix to 64
+-        if(IS_DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib64)
++        if(IS_DIRECTORY "${CMAKE_INSTALL_PREFIX}/lib64")
+             set(LIB_SUFFIX 64)
+-        elseif(IS_DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib)
++        elseif(IS_DIRECTORY "${CMAKE_INSTALL_PREFIX}/lib")
+             set(LIB_SUFFIX "")
+         else()
+-            message(WARNING "LIB_SUFFIX cannot be autodetected. No ${CMAKE_INSTALL_PREFIX}/lib neither ${CMAKE_INSTALL_PREFIX}/lib64 found.")
++            message(WARNING "LIB_SUFFIX cannot be autodetected. No \"${CMAKE_INSTALL_PREFIX}/lib\" neither \"${CMAKE_INSTALL_PREFIX}/lib64\" found.")
+             set(LIB_SUFFIX "")
+         endif()
+     else()
+@@ -21,6 +21,6 @@ IF(NOT DEFINED LIB_SUFFIX AND LIB_SUFFIX_ALREADY_SET)
+     
+     set(LIB_SUFFIX_ALREADY_SET 1)
+ 
+-    message(STATUS "LIB_SUFFIX autodetected as '${LIB_SUFFIX}', libraries will be installed into ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
++    message(STATUS "LIB_SUFFIX autodetected as '${LIB_SUFFIX}', libraries will be installed into \"${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}\"")
+     MESSAGE(STATUS "*********************************************************************")
+ ENDIF(NOT DEFINED LIB_SUFFIX AND LIB_SUFFIX_ALREADY_SET)
+diff --git a/cmake/create_pkgconfig_file.cmake b/cmake/create_pkgconfig_file.cmake
+index f194b87..92592af 100644
+--- a/cmake/create_pkgconfig_file.cmake
++++ b/cmake/create_pkgconfig_file.cmake
+@@ -31,6 +31,6 @@ macro (create_pkgconfig_file name desc requires include_rel_dir version)
+     if(${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
+         install(FILES ${_pkgfname} DESTINATION libdata/pkgconfig)
+     else()
+-        install(FILES ${_pkgfname} DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
++        install(FILES ${_pkgfname} DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+     endif()
+ endmacro()
+diff --git a/cmake/create_portable_headers.cmake b/cmake/create_portable_headers.cmake
+index 880db30..ac29c84 100644
+--- a/cmake/create_portable_headers.cmake
++++ b/cmake/create_portable_headers.cmake
+@@ -19,10 +19,10 @@ function(create_portable_headers outfiles)
+     foreach(f ${class_list})
+         string(TOLOWER "${f}.h" _filename)
+ 
+-        file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${f}
++        file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/${f}"
+             "#include \"${_filename}\"")
+ 
+-        list(APPEND ${outfiles} ${CMAKE_CURRENT_BINARY_DIR}/${f})
++        list(APPEND ${outfiles} "${CMAKE_CURRENT_BINARY_DIR}/${f}")
+     endforeach()
+ 
+     set(${outfiles} ${${outfiles}} PARENT_SCOPE)
+diff --git a/cmake/qt5xdg-config.cmake.in b/cmake/qt5xdg-config.cmake.in
+index 83f316b..1a338f5 100644
+--- a/cmake/qt5xdg-config.cmake.in
++++ b/cmake/qt5xdg-config.cmake.in
+@@ -32,17 +32,17 @@
+ #    add_executable(use-qtxdg main.cpp)
+ #    target_link_libraries(use-qtxdg ${QTXDG_LIBRARIES})
+ 
+-set(QTXDG_INCLUDE_DIR   @QTXDG_INCLUDE_DIR@)
++set(QTXDG_INCLUDE_DIR   "@QTXDG_INCLUDE_DIR@")
+ set(QTXDG_LIBRARY       @QTXDGX_LIBRARY_NAME@)
+-set(QTXDG_PRIVATE_INCLUDE_DIR @QTXDG_PRIVATE_INCLUDE_DIR@ CACHE PATH "Qt5Xdg private include dir")
++set(QTXDG_PRIVATE_INCLUDE_DIR "@QTXDG_PRIVATE_INCLUDE_DIR@" CACHE PATH "Qt5Xdg private include dir")
+ 
+ set(QTXDG_LIBRARIES     ${QTXDG_LIBRARY})
+-set(QTXDG_INCLUDE_DIRS  ${QTXDG_INCLUDE_DIR})
+-set(QTXDG_PRIVATE_INCLUDE_DIRS ${QTXDG_PRIVATE_INCLUDE_DIR})
++set(QTXDG_INCLUDE_DIRS  "${QTXDG_INCLUDE_DIR}")
++set(QTXDG_PRIVATE_INCLUDE_DIRS "${QTXDG_PRIVATE_INCLUDE_DIR}")
+ 
+-set(QTXDG_LIBRARY_DIRS  @CMAKE_INSTALL_FULL_LIBDIR@)
++set(QTXDG_LIBRARY_DIRS  "@CMAKE_INSTALL_FULL_LIBDIR@")
+ 
+-set(QTXDG_USE_FILE      ${CMAKE_CURRENT_LIST_DIR}/@QTXDGX_FILE_NAME@_use.cmake)
++set(QTXDG_USE_FILE      "${CMAKE_CURRENT_LIST_DIR}/@QTXDGX_FILE_NAME@_use.cmake")
+ set(QTXDG_FOUND 1)
+ set(QTXDG_QTMIMETYPES   @USE_QTMIMETYPES@)
+ 
+diff --git a/cmake/qt5xdg_use.cmake b/cmake/qt5xdg_use.cmake
+index c89379b..c21839f 100644
+--- a/cmake/qt5xdg_use.cmake
++++ b/cmake/qt5xdg_use.cmake
+@@ -12,10 +12,10 @@ set(CMAKE_CXX_FLAGS
+ set(QTXDG_QT_LIBRARIES ${Qt5Widgets_LIBRARIES} ${Qt5Xml_LIBRARIES})
+ set(QTXDG_LIBRARIES ${QTXDG_LIBRARIES} ${QTXDG_QT_LIBRARIES})
+ set(QTXDG_INCLUDE_DIRS
+-    ${QTXDG_INCLUDE_DIRS}
+-    ${Qt5Widgets_INCLUDE_DIRS}
+-    ${Qt5Xml_INCLUDE_DIRS}
++    "${QTXDG_INCLUDE_DIRS}"
++    "${Qt5Widgets_INCLUDE_DIRS}"
++    "${Qt5Xml_INCLUDE_DIRS}"
+ )
+ 
+-link_directories(${QTXDG_LIBRARY_DIRS})
+-include_directories(${QTXDG_INCLUDE_DIRS})
++link_directories("${QTXDG_LIBRARY_DIRS}")
++include_directories("${QTXDG_INCLUDE_DIRS}")
+diff --git a/cmake/qtxdg-config.cmake.in b/cmake/qtxdg-config.cmake.in
+index b25dc23..33fa866 100644
+--- a/cmake/qtxdg-config.cmake.in
++++ b/cmake/qtxdg-config.cmake.in
+@@ -32,16 +32,16 @@
+ #    add_executable(use-qtxdg main.cpp)
+ #    target_link_libraries(use-qtxdg ${QTXDG_LIBRARIES})
+ 
+-set(QTXDG_INCLUDE_DIR   @QTXDG_INCLUDE_DIR@)
+-set(QTXDG_PRIVATE_INCLUDE_DIR @QTXDG_PRIVATE_INCLUDE_DIR@)
++set(QTXDG_INCLUDE_DIR   "@QTXDG_INCLUDE_DIR@")
++set(QTXDG_PRIVATE_INCLUDE_DIR "@QTXDG_PRIVATE_INCLUDE_DIR@")
+ set(QTXDG_LIBRARY       @QTXDGX_LIBRARY_NAME@)
+ 
+ set(QTXDG_LIBRARIES     ${QTXDG_LIBRARY})
+-set(QTXDG_INCLUDE_DIRS  ${QTXDG_INCLUDE_DIR})
++set(QTXDG_INCLUDE_DIRS  "${QTXDG_INCLUDE_DIR}")
+ 
+-set(QTXDG_LIBRARY_DIRS  @CMAKE_INSTALL_FULL_LIBDIR@)
++set(QTXDG_LIBRARY_DIRS  "@CMAKE_INSTALL_FULL_LIBDIR@")
+ 
+-set(QTXDG_USE_FILE      ${CMAKE_CURRENT_LIST_DIR}/@QTXDGX_FILE_NAME@_use.cmake)
++set(QTXDG_USE_FILE      "${CMAKE_CURRENT_LIST_DIR}/@QTXDGX_FILE_NAME@_use.cmake")
+ set(QTXDG_FOUND 1)
+ set(QTXDG_QTMIMETYPES   @USE_QTMIMETYPES@)
+ 
+-- 
+1.9.0
+

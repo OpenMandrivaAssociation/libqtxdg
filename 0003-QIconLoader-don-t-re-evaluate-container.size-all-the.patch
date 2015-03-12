@@ -1,7 +1,7 @@
 From d2ee3b02c8f101f9abdbadcc6abedb2e1459fde9 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Mon, 2 Feb 2015 10:35:58 -0800
-Subject: [PATCH 03/15] QIconLoader: don't re-evaluate container.size() all the
+Subject: [PATCH 03/27] QIconLoader: don't re-evaluate container.size() all the
  time
 
 Experience shows that the compiler does not recognize the

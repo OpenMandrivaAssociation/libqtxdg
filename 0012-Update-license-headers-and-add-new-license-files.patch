@@ -1,7 +1,7 @@
 From 0ee3ed3bc7be71d4db416a76adf331b812e9a826 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Mon, 2 Feb 2015 11:53:02 -0800
-Subject: [PATCH 12/15] Update license headers and add new license files
+Subject: [PATCH 12/27] Update license headers and add new license files
 
 Port of commit
 https://qt.gitorious.org/qt/qtbase/commits/974c2108352d1136835a615d3b56b827d6ef99dd

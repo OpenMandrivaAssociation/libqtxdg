@@ -1,7 +1,7 @@
 From 0fdf0a860e7bbf1204a1813219a9b7b63cdf0c8b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Mon, 2 Feb 2015 09:47:27 -0800
-Subject: [PATCH 01/15] QIconLoader: remove an unused variable
+Subject: [PATCH 01/27] QIconLoader: remove an unused variable
 
 Port of commit
 https://qt.gitorious.org/qt/qtbase/commits/c07a9d6c634c79a7f7db880286b9357b01ea6fe8

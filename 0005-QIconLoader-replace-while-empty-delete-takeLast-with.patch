@@ -1,7 +1,7 @@
 From 3e7530df040013f028eeadf8b4638b160339c30b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Mon, 2 Feb 2015 10:49:07 -0800
-Subject: [PATCH 05/15] QIconLoader: replace while(!empty()) delete takeLast()
+Subject: [PATCH 05/27] QIconLoader: replace while(!empty()) delete takeLast()
  with qDeleteAll()
 
 There's no calling back into QIconLoaderEngine from the QIconLoaderEngineEntry

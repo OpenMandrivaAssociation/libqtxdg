@@ -1,7 +1,7 @@
 From dce043f2c29c096f950f9d04d71ad2e8e705f36b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
 Date: Tue, 10 Feb 2015 15:06:43 -0800
-Subject: [PATCH 15/15] Makes needed helper functions available to tests
+Subject: [PATCH 16/27] Makes needed helper functions available to tests
 
 Commits f2fde114628bf85fe107363532f67f49a5a3ccf9 and it's Clang equivalent:
 e082464be5cd48d16c43c6de1cfd4366fb1bed37 hide unneeded symbols.
