@@ -1,0 +1,32 @@
+From 1c386ab83d1701bed82e1d5456d87e9ad744ea47 Mon Sep 17 00:00:00 2001
+From: Palo Kisa <palo.kisa@gmail.com>
+Date: Fri, 13 Mar 2015 11:11:42 +0100
+Subject: [PATCH] desktopfile: run new process as a direct child
+
+fixes lxde/libqtxdg#50
+pkexec refuses to execute anything in case the process has no "real" parent
+---
+ xdgdesktopfile.cpp | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/xdgdesktopfile.cpp b/xdgdesktopfile.cpp
+index 7cdd5dd..ef0a7e2 100644
+--- a/xdgdesktopfile.cpp
++++ b/xdgdesktopfile.cpp
+@@ -394,7 +394,12 @@ bool XdgDesktopFileData::startApplicationDetached(const XdgDesktopFile *q, const
+     }
+ 
+     QString cmd = args.takeFirst();
+-    return QProcess::startDetached(cmd, args);
++    QProcess* p = new QProcess;
++    p->setStandardInputFile(QProcess::nullDevice());
++    p->setProcessChannelMode(QProcess::ForwardedChannels);
++    QObject::connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
++    p->start(cmd, args);
++    return p->waitForStarted();
+ }
+ 
+ 
+-- 
+1.9.0
+
