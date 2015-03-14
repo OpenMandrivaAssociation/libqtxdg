@@ -1,0 +1,12 @@
+diff -Naur libqtxdg-1.1.0/xdgdesktopfile.cpp libqtxdg-1.1.0.tpg/xdgdesktopfile.cpp
+--- libqtxdg-1.1.0/xdgdesktopfile.cpp	2015-03-14 01:16:14.000000000 +0000
++++ libqtxdg-1.1.0.tpg/xdgdesktopfile.cpp	2015-03-14 01:18:56.594576456 +0000
+@@ -387,7 +387,7 @@
+     {
+         QString term = getenv("TERM");
+         if (term.isEmpty())
+-            term = "xterm";
++            term = "xvt";
+ 
+         args.prepend("-e");
+         args.prepend(term);

@@ -11,7 +11,7 @@ Name: libqtxdg
 Version: 1.1.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 5
+Release: 6
 Source0: %{name}-%{version}.tar.xz
 %else
 Release: 0.%{scmrev}.1
@@ -56,6 +56,7 @@ Patch24: 0025-Make-sure-returned-directories-don-t-have-an-trailin.patch
 Patch26: 0026-String-manipulation-enhancements.patch
 Patch27: 0027-XdgDirs-Updates-documentation.patch
 Patch28: 0028-desktopfile-run-new-process-as-a-direct-child.patch
+Patch100: libqtxdg-1.1.0-use-xvt.patch
 Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL
@@ -96,6 +97,7 @@ freedesktop.org specs implementations for Qt.
 %setup -q -n %{name}-%{version}-%{scmrev}
 %endif
 %apply_patches
+
 %cmake_qt5 -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
 
 %build
