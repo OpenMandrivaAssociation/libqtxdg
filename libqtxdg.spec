@@ -39,6 +39,8 @@ BuildRequires: cmake(Qt5LinguistTools)
 BuildRequires: ninja
 BuildRequires: cmake(Qt5Widgets)
 BuildRequires: cmake(Qt5Xml)
+BuildRequires: cmake(Qt5DBus)
+BuildRequires: cmake(Qt5Test)
 %rename %{name}-data
 
 %description
