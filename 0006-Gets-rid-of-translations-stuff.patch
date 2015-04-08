@@ -1,0 +1,61 @@
+From d057a22dabb4df82dd9b9af97e403fcf9a73684f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Wed, 1 Apr 2015 16:48:33 -0700
+Subject: [PATCH 6/9] Gets rid of translations stuff
+
+It was left behind. We don't have translations anymore
+---
+ CMakeLists.txt |  4 ----
+ xdgmenu.cpp    | 16 ----------------
+ 2 files changed, 20 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9866c2f..76ac4dd 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -118,10 +118,6 @@ set(libqtxdg_PRIVATE_INSTALLABLE_H_FILES
+     qiconfix/qiconloader_p.h
+ )
+ 
+-set(APP_SHARE_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/lib${QTXDGX_FILE_NAME}")
+-add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
+-
+-
+ #************************************************
+ # Build 2 config.cmake files
+ # One for in-tree build and second for normal one.
+diff --git a/xdgmenu.cpp b/xdgmenu.cpp
+index 472d0fd..ba0e698 100644
+--- a/xdgmenu.cpp
++++ b/xdgmenu.cpp
+@@ -54,27 +54,11 @@
+ void installTranslation(const QString &name);
+ bool isParent(const QDomElement& parent, const QDomElement& child);
+ 
+-void installTranslation(const QString &name)
+-{
+-    static bool alreadyLoaded = false;
+-
+-    if (alreadyLoaded)
+-        return;
+-
+-    QString locale = QLocale::system().name();
+-    QTranslator *translator = new QTranslator(qApp);
+-    translator->load(QString("%1/%2_%3.qm").arg(TRANSLATIONS_DIR, name, locale));
+-
+-    QCoreApplication::installTranslator(translator);
+-    alreadyLoaded = true;
+-}
+-
+ 
+ XdgMenu::XdgMenu(QObject *parent) :
+     QObject(parent),
+     d_ptr(new XdgMenuPrivate(this))
+ {
+-    installTranslation("libqtxdg");
+ }
+ 
+ 
+-- 
+1.9.0
+

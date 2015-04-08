@@ -1,0 +1,92 @@
+From 8f067042df1fd26201b73a47c872f67522304ff2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Thu, 2 Apr 2015 08:44:20 -0700
+Subject: [PATCH 7/9] QIconLoader: Change the order fallback icon lookup order
+
+From the standard: "Icons and themes are looked for in a set of
+directories. By default, apps should look in $HOME/.icons
+(for backwards compatibility), in $XDG_DATA_DIRS/icons and in
+/usr/share/pixmaps (in that order)."
+---
+ qiconfix/qiconloader.cpp | 58 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 30 insertions(+), 28 deletions(-)
+
+diff --git a/qiconfix/qiconloader.cpp b/qiconfix/qiconloader.cpp
+index 5a868c9..03e19f8 100644
+--- a/qiconfix/qiconloader.cpp
++++ b/qiconfix/qiconloader.cpp
+@@ -326,6 +326,36 @@ QThemeIconEntries QIconLoader::findIconHelper(const QString &themeName,
+         }
+     }
+ 
++    if (entries.isEmpty()) {
++       // Search for unthemed icons in main dir of search paths
++       QStringList themeSearchPaths = QIcon::themeSearchPaths();
++        foreach (QString contentDir, themeSearchPaths)  {
++            QDir currentDir(contentDir);
++
++            if (currentDir.exists(iconName + pngext)) {
++                PixmapEntry *iconEntry = new PixmapEntry;
++                iconEntry->filename = currentDir.filePath(iconName + pngext);
++                // Notice we ensure that pixmap entries always come before
++                // scalable to preserve search order afterwards
++                entries.prepend(iconEntry);
++            } else if (m_supportsSvg &&
++                currentDir.exists(iconName + svgext)) {
++                ScalableEntry *iconEntry = new ScalableEntry;
++                iconEntry->filename = currentDir.filePath(iconName + svgext);
++                entries.append(iconEntry);
++                break;
++            } else if (currentDir.exists(iconName + xpmext)) {
++                PixmapEntry *iconEntry = new PixmapEntry;
++                iconEntry->filename = currentDir.filePath(iconName + xpmext);
++                // Notice we ensure that pixmap entries always come before
++                // scalable to preserve search order afterwards
++                entries.append(iconEntry);
++                break;
++            }
++        }
++    }
++
++
+     /*********************************************************************
+     Author: Kaitlin Rupert <kaitlin.rupert@intel.com>
+     Date: Aug 12, 2010
+@@ -366,34 +396,6 @@ QThemeIconEntries QIconLoader::findIconHelper(const QString &themeName,
+     }
+ #endif
+ 
+-    if (entries.isEmpty()) {
+-       // Search for unthemed icons in main dir of search paths
+-       QStringList themeSearchPaths = QIcon::themeSearchPaths();
+-        foreach (QString contentDir, themeSearchPaths)  {
+-            QDir currentDir(contentDir);
+-
+-            if (currentDir.exists(iconName + pngext)) {
+-                PixmapEntry *iconEntry = new PixmapEntry;
+-                iconEntry->filename = currentDir.filePath(iconName + pngext);
+-                // Notice we ensure that pixmap entries always come before
+-                // scalable to preserve search order afterwards
+-                entries.prepend(iconEntry);
+-            } else if (m_supportsSvg &&
+-                currentDir.exists(iconName + svgext)) {
+-                ScalableEntry *iconEntry = new ScalableEntry;
+-                iconEntry->filename = currentDir.filePath(iconName + svgext);
+-                entries.append(iconEntry);
+-                break;
+-            } else if (currentDir.exists(iconName + xpmext)) {
+-                PixmapEntry *iconEntry = new PixmapEntry;
+-                iconEntry->filename = currentDir.filePath(iconName + xpmext);
+-                // Notice we ensure that pixmap entries always come before
+-                // scalable to preserve search order afterwards
+-                entries.append(iconEntry);
+-                break;
+-            }
+-        }
+-    }
+     return entries;
+ }
+ 
+-- 
+1.9.0
+

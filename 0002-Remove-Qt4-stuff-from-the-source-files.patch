@@ -1,0 +1,390 @@
+From 38a7a2358dad920227a142ee804bd982dcce0c40 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Wed, 25 Mar 2015 08:16:34 -0700
+Subject: [PATCH 2/9] Remove Qt4 stuff from the source files
+
+Step2:
+    * Remove Qt4 conditional code from the source files;
+    * Remove Qt4 dependent definitions from the build system.
+---
+ CMakeLists.txt         |  7 ----
+ cmake/qt5xdg_use.cmake |  4 ---
+ xdgdesktopfile.cpp     | 27 --------------
+ xdgdirs.cpp            | 95 --------------------------------------------------
+ xdgicon.cpp            |  4 ---
+ xdgmenuwidget.cpp      |  3 --
+ xdgmimetype.h          |  3 --
+ 7 files changed, 143 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0c78de3..9866c2f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -49,12 +49,6 @@ add_definitions(${Qt5Core_DEFINITIONS})
+ #        "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}"
+ #    )
+ 
+-# QMimeDatabase and QMimeType are part of Qt5Core
+-# We just use that as an mimetype provider.
+-# An empty MIMETYPES_PROVIDER_LIBRARY means we are using Qt internal
+-# mimetypes support
+-set(MIMETYPES_PROVIDER_LIBRARY "")
+-add_definitions("-DHAVE_QTMIMETYPES")
+ 
+ set(QTX_LIBRARIES ${Qt5Widgets_LIBRARIES} ${Qt5Xml_LIBRARIES} ${Qt5DBus_LIBRARIES})
+ message(STATUS "Building with Qt ${Qt5Core_VERSION_STRING}")
+@@ -186,7 +180,6 @@ add_library(${QTXDGX_LIBRARY_NAME} SHARED
+ 
+ target_link_libraries(${QTXDGX_LIBRARY_NAME}
+     ${QTX_LIBRARIES}
+-    ${MIMETYPES_PROVIDER_LIBRARY}
+ )
+ 
+ set_target_properties(${QTXDGX_LIBRARY_NAME} PROPERTIES
+diff --git a/cmake/qt5xdg_use.cmake b/cmake/qt5xdg_use.cmake
+index 1cdb58e..48936d4 100644
+--- a/cmake/qt5xdg_use.cmake
++++ b/cmake/qt5xdg_use.cmake
+@@ -2,10 +2,6 @@ find_package(Qt5Widgets REQUIRED)
+ find_package(Qt5Xml REQUIRED)
+ find_package(Qt5DBus REQUIRED)
+ 
+-if (QTXDG_QTMIMETYPES)
+-    add_definitions("-DQT_MIMETYPES")
+-endif()
+-
+ add_definitions(${Qt5Core_DEFINITIONS})
+ set(CMAKE_CXX_FLAGS
+     "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}"
+diff --git a/xdgdesktopfile.cpp b/xdgdesktopfile.cpp
+index d92a872..8905a88 100644
+--- a/xdgdesktopfile.cpp
++++ b/xdgdesktopfile.cpp
+@@ -36,12 +36,8 @@
+ #include "xdgdesktopfile.h"
+ #include "xdgdesktopfile_p.h"
+ 
+-#ifdef HAVE_QTMIMETYPES
+ #include <QMimeDatabase>
+ #include <QMimeType>
+-#else
+-#include "xdgmime.h"
+-#endif
+ 
+ #include "xdgicon.h"
+ #include "xdgdirs.h"
+@@ -58,10 +54,7 @@
+ #include <QUrl>
+ #include <QDesktopServices>
+ #include <QStringBuilder> // for the % operator
+-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+-#else
+ #include <QStandardPaths>
+-#endif
+ 
+ #include <QList>
+ #include <QtAlgorithms>
+@@ -418,11 +411,7 @@ bool XdgDesktopFileData::startApplicationDetached(const XdgDesktopFile *q, const
+     if (nonDetach)
+     {
+         QScopedPointer<QProcess> p(new QProcess);
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+         p->setStandardInputFile(QProcess::nullDevice());
+-#else
+-        p->setStandardInputFile(QLatin1String("/dev/null"));
+-#endif
+         p->setProcessChannelMode(QProcess::ForwardedChannels);
+         p->start(cmd, args);
+         bool started = p->waitForStarted();
+@@ -460,14 +449,9 @@ bool XdgDesktopFileData::startLinkDetached(const XdgDesktopFile *q) const
+         // Local file
+         QFileInfo fi(url);
+ 
+-#ifdef HAVE_QTMIMETYPES
+         QMimeDatabase db;
+         QMimeType mimeInfo = db.mimeTypeForFile(fi);
+         XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(mimeInfo.name());
+-#else
+-        XdgMimeInfo mimeInfo(fi);
+-        XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(mimeInfo.mimeType());
+-#endif
+ 
+         if (desktopFile)
+             return desktopFile->startDetached(url);
+@@ -981,16 +965,6 @@ QString expandEnvVariables(const QString str)
+     replaceVar(res, "HOME", getenv("HOME"));
+     replaceVar(res, "USER", getenv("USER"));
+ 
+-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+-    replaceVar(res, "XDG_DESKTOP_DIR",   QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+-    replaceVar(res, "XDG_TEMPLATES_DIR", QDesktopServices::storageLocation(QDesktopServices::TempLocation));
+-    replaceVar(res, "XDG_DOCUMENTS_DIR", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+-    replaceVar(res, "XDG_MUSIC_DIR",     QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+-    replaceVar(res, "XDG_PICTURES_DIR",  QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+-    replaceVar(res, "XDG_VIDEOS_DIR",    QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+-    replaceVar(res, "XDG_PHOTOS_DIR",    QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+-    replaceVar(res, "XDG_MOVIES_DIR",    QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+-#else
+     replaceVar(res, "XDG_DESKTOP_DIR",   QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+     replaceVar(res, "XDG_TEMPLATES_DIR", QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+     replaceVar(res, "XDG_DOCUMENTS_DIR", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+@@ -999,7 +973,6 @@ QString expandEnvVariables(const QString str)
+     replaceVar(res, "XDG_VIDEOS_DIR",    QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+     replaceVar(res, "XDG_PHOTOS_DIR",    QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+     replaceVar(res, "XDG_MOVIES_DIR",    QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+-#endif // QT_VERSION < QT_VERSION_CHECK(5,0,0)
+ 
+     return res;
+ }
+diff --git a/xdgdirs.cpp b/xdgdirs.cpp
+index 2671ae2..32c178b 100644
+--- a/xdgdirs.cpp
++++ b/xdgdirs.cpp
+@@ -31,9 +31,7 @@
+ #include <QDir>
+ #include <QStringBuilder> // for the % operator
+ #include <QDebug>
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+ #include <QStandardPaths>
+-#endif
+ 
+ static const QString userDirectoryString[8] =
+ {
+@@ -52,14 +50,8 @@ void fixBashShortcuts(QString &s);
+ void removeEndingSlash(QString &s);
+ QString createDirectory(const QString &dir);
+ 
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+ void cleanAndAddPostfix(QStringList &dirs, const QString& postfix);
+-#endif
+ 
+-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+-QString xdgSingleDir(const QString &envVar, const QString &def, bool createDir);
+-QStringList xdgDirList(const QString &envVar, const QString &postfix);
+-#endif
+ 
+ /************************************************
+  Helper func.
+@@ -105,53 +97,6 @@ void cleanAndAddPostfix(QStringList &dirs, const QString& postfix)
+     }
+ }
+ 
+-/************************************************
+- Helper func.
+- ************************************************/
+-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+-QString xdgSingleDir(const QString &envVar, const QString &def, bool createDir)
+-{
+-    QString s(getenv(envVar.toAscii()));
+-
+-    if (!s.isEmpty())
+-        fixBashShortcuts(s);
+-    else
+-        s = QString("%1/%2").arg(getenv("HOME"), def);
+-
+-    if (createDir)
+-        return createDirectory(s);
+-
+-    removeEndingSlash(s);
+-    return s;
+-}
+-#endif
+-
+-/************************************************
+- Helper func.
+- ************************************************/
+-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+-QStringList xdgDirList(const QString &envVar, const QString &postfix)
+-{
+-    QStringList dirs = QString(getenv(envVar.toAscii())).split(':', QString::SkipEmptyParts);
+-
+-    QMutableStringListIterator i(dirs);
+-    while(i.hasNext()) {
+-        i.next();
+-        QString s = i.value();
+-        if (s.isEmpty()) {
+-            i.remove();
+-        } else {
+-            fixBashShortcuts(s);
+-            removeEndingSlash(s);
+-            i.setValue(s % postfix);
+-        }
+-    }
+-    return dirs;
+-}
+-#endif
+-/************************************************
+-
+- ************************************************/
+ QString XdgDirs::userDir(XdgDirs::UserDirectory dir)
+ {
+     // possible values for UserDirectory
+@@ -267,7 +212,6 @@ bool XdgDirs::setUserDir(XdgDirs::UserDirectory dir, const QString& value, bool
+  ************************************************/
+ QString XdgDirs::dataHome(bool createDir)
+ {
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+     QString s = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+     fixBashShortcuts(s);
+     if (createDir)
+@@ -275,9 +219,6 @@ QString XdgDirs::dataHome(bool createDir)
+ 
+    removeEndingSlash(s);
+    return s;
+-#else
+-    return xdgSingleDir("XDG_DATA_HOME", QLatin1String(".local/share"), createDir);
+-#endif
+ }
+ 
+ 
+@@ -286,7 +227,6 @@ QString XdgDirs::dataHome(bool createDir)
+  ************************************************/
+ QString XdgDirs::configHome(bool createDir)
+ {
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+     QString s = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
+     fixBashShortcuts(s);
+     if (createDir)
+@@ -294,9 +234,6 @@ QString XdgDirs::configHome(bool createDir)
+ 
+    removeEndingSlash(s);
+    return s;
+-#else
+-    return xdgSingleDir("XDG_CONFIG_HOME", QLatin1String(".config"), createDir);
+-#endif
+ }
+ 
+ 
+@@ -305,7 +242,6 @@ QString XdgDirs::configHome(bool createDir)
+  ************************************************/
+ QStringList XdgDirs::dataDirs(const QString &postfix)
+ {
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+     QString d = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
+     QStringList dirs = d.split(QLatin1Char(':'), QString::SkipEmptyParts);
+ 
+@@ -319,16 +255,6 @@ QStringList XdgDirs::dataDirs(const QString &postfix)
+     dirs.removeDuplicates();
+     cleanAndAddPostfix(dirs, postfix);
+     return dirs;
+-#else
+-    QStringList dirs = xdgDirList("XDG_DATA_DIRS", postfix);
+-    if (dirs.isEmpty())
+-    {
+-        dirs << QLatin1String("/usr/local/share") % postfix;
+-        dirs << QLatin1String("/usr/share") % postfix;
+-    }
+-
+-    return dirs;
+-#endif
+ 
+ }
+ 
+@@ -338,7 +264,6 @@ QStringList XdgDirs::dataDirs(const QString &postfix)
+  ************************************************/
+ QStringList XdgDirs::configDirs(const QString &postfix)
+ {
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+     QStringList dirs;
+     const QString env = QFile::decodeName(qgetenv("XDG_CONFIG_DIRS"));
+     if (env.isEmpty())
+@@ -348,15 +273,6 @@ QStringList XdgDirs::configDirs(const QString &postfix)
+ 
+     cleanAndAddPostfix(dirs, postfix);
+     return dirs;
+-#else
+-    QStringList dirs = xdgDirList("XDG_CONFIG_DIRS", postfix);
+-    if (dirs.isEmpty())
+-    {
+-        dirs << QLatin1String("/etc/xdg") % postfix;
+-    }
+-
+-    return dirs;
+-#endif
+ }
+ 
+ 
+@@ -365,7 +281,6 @@ QStringList XdgDirs::configDirs(const QString &postfix)
+  ************************************************/
+ QString XdgDirs::cacheHome(bool createDir)
+ {
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+     QString s = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+     fixBashShortcuts(s);
+     if (createDir)
+@@ -373,10 +288,6 @@ QString XdgDirs::cacheHome(bool createDir)
+ 
+     removeEndingSlash(s);
+     return s;
+-#else
+-    return xdgSingleDir("XDG_CACHE_HOME", QLatin1String(".cache"), createDir);
+-#endif
+-
+ }
+ 
+ 
+@@ -385,16 +296,10 @@ QString XdgDirs::cacheHome(bool createDir)
+  ************************************************/
+ QString XdgDirs::runtimeDir()
+ {
+-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+     QString result = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
+     fixBashShortcuts(result);
+     removeEndingSlash(result);
+     return result;
+-#else
+-    QString result(getenv("XDG_RUNTIME_DIR"));
+-    fixBashShortcuts(result);
+-    return result;
+-#endif
+ }
+ 
+ 
+diff --git a/xdgicon.cpp b/xdgicon.cpp
+index d32e5e9..f92886b 100644
+--- a/xdgicon.cpp
++++ b/xdgicon.cpp
+@@ -35,11 +35,7 @@
+ #include <QStringList>
+ #include <QFileInfo>
+ #include <QCache>
+-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+-#include "qiconfix/qiconloader_p_qt4.h"
+-#else
+ #include "qiconfix/qiconloader_p.h"
+-#endif
+ #include <QCoreApplication>
+ 
+ #define DEFAULT_APP_ICON "application-x-executable"
+diff --git a/xdgmenuwidget.cpp b/xdgmenuwidget.cpp
+index 1f12605..8225c24 100644
+--- a/xdgmenuwidget.cpp
++++ b/xdgmenuwidget.cpp
+@@ -35,10 +35,7 @@
+ #include <QEvent>
+ #include <QDebug>
+ #include <QUrl>
+-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+-#else
+ #include <QMimeData>
+-#endif
+ #include <QtGui/QDrag>
+ #include <QtGui/QMouseEvent>
+ #include <QApplication>
+diff --git a/xdgmimetype.h b/xdgmimetype.h
+index a654834..0edf085 100644
+--- a/xdgmimetype.h
++++ b/xdgmimetype.h
+@@ -121,9 +121,6 @@ protected:
+ 
+ 
+ };
+-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+-#else
+ Q_DECLARE_SHARED(XdgMimeType)
+-#endif
+ 
+ #endif // QTXDG_MIMETYPE_H
+-- 
+1.9.0
+

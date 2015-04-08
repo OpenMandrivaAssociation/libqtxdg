@@ -1,0 +1,84 @@
+From 4b31a1f2c80a69a3f6acee1046d7c9822545375b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Wed, 25 Mar 2015 08:30:59 -0700
+Subject: [PATCH 3/9] Remove Qt4 stuff from the example and tests
+
+Also updates the examples cmake_minimum_required().
+---
+ examples/use-qtxdg/CMakeLists.txt |  9 ++-------
+ test/CMakeLists.txt               | 32 +++++++++-----------------------
+ 2 files changed, 11 insertions(+), 30 deletions(-)
+
+diff --git a/examples/use-qtxdg/CMakeLists.txt b/examples/use-qtxdg/CMakeLists.txt
+index 0674766..38605fe 100644
+--- a/examples/use-qtxdg/CMakeLists.txt
++++ b/examples/use-qtxdg/CMakeLists.txt
+@@ -1,13 +1,8 @@
+ project(use-qtxdg)
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 2.8.11)
+ 
+-option(USE_QT5 "Build using Qt5. Default off" OFF)
+ 
+-if (USE_QT5)
+-    find_package(QT5XDG)
+-else()
+-    find_package(QTXDG)
+-endif()
++find_package(QT5XDG)
+ 
+ include(${QTXDG_USE_FILE})
+ 
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index b5792b5..2f8f7da 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -17,36 +17,22 @@ if (BUILD_TESTS)
+     add_definitions(-DQTXDG_BUILDING_TESTS=1)
+ endif()
+ 
+-if (USE_QT5)
+-    qt5_wrap_cpp(MOCS ${${PROJECT_NAME}_MOCS})
+-else()
+-    qt4_wrap_cpp(MOCS ${${PROJECT_NAME}_MOCS})
+-endif()
++qt5_wrap_cpp(MOCS ${${PROJECT_NAME}_MOCS})
+ 
+ include_directories (
+     ${CMAKE_SOURCE_DIR}
+ )
+ 
+-if (USE_QT5)
+-    add_definitions(${Qt5Test_DEFINITINS})
+-    include_directories (
+-        ${Qt5Test_INCLUDE_DIRS}
+-    )
+-    set(CMAKE_CXX_FLAGS
+-        "${CMAKE_CXX_FLAGS} ${Qt5Test_EXECUTABLE_COMPILE_FLAGS}"
+-    )
+-else()
+-    include_directories (
+-        ${QT_QTCORE_INCLUDE_DIR}
+-    )
+-endif()
++add_definitions(${Qt5Test_DEFINITINS})
++include_directories (
++    ${Qt5Test_INCLUDE_DIRS}
++)
++set(CMAKE_CXX_FLAGS
++    "${CMAKE_CXX_FLAGS} ${Qt5Test_EXECUTABLE_COMPILE_FLAGS}"
++)
+ 
+ add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
+ 
+-if (USE_QT5)
+-    target_link_libraries ( ${PROJECT_NAME} ${Qt5Test_LIBRARIES} ${LIBRARIES} )
+-else()
+-    target_link_libraries ( ${PROJECT_NAME} ${QT_LIBRARIES}  ${LIBRARIES} )
+-endif()
++target_link_libraries ( ${PROJECT_NAME} ${Qt5Test_LIBRARIES} ${LIBRARIES} )
+ 
+ add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
+-- 
+1.9.0
+
