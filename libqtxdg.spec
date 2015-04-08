@@ -11,7 +11,7 @@ Name: libqtxdg
 Version: 1.2.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 2
+Release: 3
 Source0: %{name}-%{version}.tar.xz
 %else
 Release: 0.%{scmrev}.1
@@ -42,6 +42,7 @@ Patch5: 0006-Gets-rid-of-translations-stuff.patch
 Patch6: 0007-QIconLoader-Change-the-order-fallback-icon-lookup-or.patch
 Patch7: 0008-Fixes-XdgDirs-dataHome-regression.patch
 Patch8: 0009-XdgDesktopFile-Handles-NotShowIn-correctly.patch
+Patch9: 0010-Adds-XdgDirs-configHome-fallback-default-locations.patch
 BuildRequires: cmake
 BuildRequires: qmake5
 BuildRequires: cmake(Qt5LinguistTools)

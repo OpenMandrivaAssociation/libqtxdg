@@ -1,0 +1,38 @@
+From dcfb0dc4aa61c7a6f5d5746e46cfb7fa40272e95 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Lu=C3=ADs=20Pereira?= <luis.artur.pereira@gmail.com>
+Date: Wed, 8 Apr 2015 15:17:46 -0700
+Subject: [PATCH 10/10] Adds XdgDirs::configHome() fallback default locations
+
+---
+ xdgdirs.cpp | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/xdgdirs.cpp b/xdgdirs.cpp
+index e6d1e71..8b93e37 100644
+--- a/xdgdirs.cpp
++++ b/xdgdirs.cpp
+@@ -236,11 +236,16 @@ QStringList XdgDirs::dataDirs(const QString &postfix)
+     QString d = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
+     QStringList dirs = d.split(QLatin1Char(':'), QString::SkipEmptyParts);
+ 
+-    QMutableListIterator<QString> it(dirs);
+-    while (it.hasNext()) {
+-        const QString dir = it.next();
+-        if (!dir.startsWith(QLatin1Char('/')))
+-            it.remove();
++    if (dirs.isEmpty()) {
++        dirs.append(QString::fromLatin1("/usr/local/share"));
++        dirs.append(QString::fromLatin1("/usr/share"));
++    } else {
++        QMutableListIterator<QString> it(dirs);
++        while (it.hasNext()) {
++            const QString dir = it.next();
++            if (!dir.startsWith(QLatin1Char('/')))
++                it.remove();
++        }
+     }
+ 
+     dirs.removeDuplicates();
+-- 
+1.9.0
+
