@@ -8,11 +8,11 @@
 %define qt4devname %mklibname qtxdg -d
 
 Name: libqtxdg
-Version: 1.2.0
+Version: 1.3.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 4
-Source0: %{name}-%{version}.tar.xz
+Release: 1
+Source0: https://github.com/lxde/libqtxdg/archive/%{version}.tar.gz
 %else
 Release: 0.%{scmrev}.1
 # git clone https://github.com/lxde/libqtxdg.git
@@ -33,16 +33,7 @@ Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
-Patch0: 0001-Get-rid-of-Qt4-stuff-in-the-build-system.patch
-Patch1: 0002-Remove-Qt4-stuff-from-the-source-files.patch
-Patch2: 0003-Remove-Qt4-stuff-from-the-example-and-tests.patch
-Patch3: 0004-Remove-Qt4-stuff-from-the-documentation.patch
-Patch4: 0005-Cleans-up-empty-comment-lines.patch
-Patch5: 0006-Gets-rid-of-translations-stuff.patch
-Patch6: 0007-QIconLoader-Change-the-order-fallback-icon-lookup-or.patch
-Patch7: 0008-Fixes-XdgDirs-dataHome-regression.patch
 Patch8: 0009-XdgDesktopFile-Handles-NotShowIn-correctly.patch
-Patch9: 0010-Adds-XdgDirs-configHome-fallback-default-locations.patch
 BuildRequires: cmake
 BuildRequires: qmake5
 BuildRequires: cmake(Qt5LinguistTools)
