@@ -11,7 +11,7 @@ Name: libqtxdg
 Version: 1.3.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 1
+Release: 2
 Source0: https://github.com/lxde/libqtxdg/archive/%{name}-%{version}.tar.xz
 %else
 Release: 1.%{scmrev}.1
