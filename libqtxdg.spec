@@ -32,7 +32,6 @@ Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
-#Patch8: 0009-XdgDesktopFile-Handles-NotShowIn-correctly.patch
 Patch100: libqtxdg-1.1.0-use-xvt.patch
 BuildRequires: cmake
 BuildRequires: qmake5
