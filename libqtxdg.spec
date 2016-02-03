@@ -11,7 +11,7 @@ Name: libqtxdg
 Version: 1.3.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 2
+Release: 3
 Source0: https://github.com/lxde/libqtxdg/archive/%{name}-%{version}.tar.xz
 %else
 Release: 1.%{scmrev}.1
@@ -28,12 +28,12 @@ Release: 1.%{beta}.%{scmrev}.1
 Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
-Patch100: libqtxdg-1.1.0-use-xvt.patch
 Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
-Patch8: 0009-XdgDesktopFile-Handles-NotShowIn-correctly.patch
+#Patch8: 0009-XdgDesktopFile-Handles-NotShowIn-correctly.patch
+Patch100: libqtxdg-1.1.0-use-xvt.patch
 BuildRequires: cmake
 BuildRequires: qmake5
 BuildRequires: cmake(Qt5LinguistTools)
