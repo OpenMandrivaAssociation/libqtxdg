@@ -1,4 +1,4 @@
-%define major 1
+%define major 2
 %define beta %{nil}
 %define scmrev %{nil}
 %define libname %mklibname qt5xdg %{major}
@@ -8,10 +8,10 @@
 %define qt4devname %mklibname qtxdg -d
 
 Name: libqtxdg
-Version: 1.3.0
+Version: 2.0.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 7
+Release: 1
 Source0: https://github.com/lxde/libqtxdg/archive/%{name}-%{version}.tar.xz
 %else
 Release: 1.%{scmrev}.1
@@ -41,6 +41,7 @@ BuildRequires: cmake(Qt5Widgets)
 BuildRequires: cmake(Qt5Xml)
 BuildRequires: cmake(Qt5DBus)
 BuildRequires: cmake(Qt5Test)
+BuildRequires: cmake(Qt5Svg)
 %rename %{name}-data
 
 %description
