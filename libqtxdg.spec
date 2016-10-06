@@ -76,10 +76,11 @@ freedesktop.org specs implementations for Qt.
 %cmake_qt5 -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
 
 %build
-ninja -C build
+%ninja -C build
 
 %install
-DESTDIR="%{buildroot}" ninja -C build install
+%ninja_install -C build
+
 # Fix up the pkgconfig file...
 sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
 
