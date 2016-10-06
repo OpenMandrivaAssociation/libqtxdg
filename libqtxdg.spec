@@ -88,7 +88,10 @@ sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
 %{_libdir}/*.so.%{major}*
 
 %files -n %{devname}
+%dir %{_datadir}/cmake/qt5xdg
+%dir %{_datadir}/cmake/qt5xdgiconloader
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*
-%{_datadir}/cmake/qt5xdg
+%{_datadir}/cmake/qt5xdg/*.cmake
+%{_datadir}/cmake/qt5xdgiconloader/*.cmake
