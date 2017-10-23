@@ -1,4 +1,4 @@
-%define major 2
+%define major 3
 %define beta %{nil}
 %define scmrev %{nil}
 %define libname %mklibname qt5xdg %{major}
@@ -8,23 +8,23 @@
 %define qt4devname %mklibname qtxdg -d
 
 Name: libqtxdg
-Version: 2.0.0
+Version: 3.1.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
 Release: 1
-Source0: https://github.com/lxde/libqtxdg/archive/%{name}-%{version}.tar.xz
+Source0: https://github.com/lxde/libqtxdg/archive/%{version}.tar.gz
 %else
-Release: 1.%{scmrev}.1
+Release: 0.%{scmrev}.1
 # git clone https://github.com/lxde/libqtxdg.git
 # git archive --format=tar --prefix libqtxdg-1.0.0-$(date +%Y%m%d)/ HEAD | xz -vf > libqtxdg-1.0.0-$(date +%Y%m%d).tar.xz
 Source0: %{name}-%{version}-%{scmrev}.tar.xz
 %endif
 %else
 %if "%{scmrev}" == ""
-Release: 1.%{beta}.1
+Release: 0.%{beta}.1
 Source0: %{name}-%{version}%{beta}.tar.xz
 %else
-Release: 1.%{beta}.%{scmrev}.1
+Release: 0.%{beta}.%{scmrev}.1
 Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
@@ -86,6 +86,7 @@ sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}*
+%{_libdir}/qt5/plugins/iconengines/libQt5XdgIconPlugin.so
 
 %files -n %{devname}
 %dir %{_datadir}/cmake/qt5xdg
