@@ -8,7 +8,7 @@
 %define qt4devname %mklibname qtxdg -d
 
 Name: libqtxdg
-Version: 3.1.0
+Version: 3.2.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
 Release: 1
