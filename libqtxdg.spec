@@ -7,6 +7,8 @@
 %define qt4libname %mklibname qtxdg %{major}
 %define qt4devname %mklibname qtxdg -d
 
+%global __requires_exclude ^cmake.*XdgIconLoader.*$
+
 Name: libqtxdg
 Version: 3.2.0
 %if "%{beta}" == ""
