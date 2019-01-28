@@ -10,10 +10,10 @@
 %global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version: 3.2.0
+Version: 3.3.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 2
+Release: 1
 Source0: https://github.com/lxde/libqtxdg/archive/%{version}.tar.gz
 %else
 Release: 0.%{scmrev}.1

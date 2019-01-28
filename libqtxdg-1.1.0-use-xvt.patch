@@ -1,6 +1,6 @@
-diff -Naur libqtxdg-2.0.0/qtxdg/xdgdesktopfile.cpp libqtxdg-2.0.0.tpg/qtxdg/xdgdesktopfile.cpp
---- libqtxdg-2.0.0/qtxdg/xdgdesktopfile.cpp	2016-09-17 12:06:08.000000000 +0000
-+++ libqtxdg-2.0.0.tpg/qtxdg/xdgdesktopfile.cpp	2016-10-06 21:04:18.855369676 +0000
+diff -Naur libqtxdg-3.3.0/src/qtxdg/xdgdesktopfile.cpp libqtxdg-3.3.0.tpg/src/qtxdg/xdgdesktopfile.cpp
+--- libqtxdg-3.3.0/src/qtxdg/xdgdesktopfile.cpp	2016-09-17 12:06:08.000000000 +0000
++++ libqtxdg-3.3.0.tpg/src/qtxdg/xdgdesktopfile.cpp	2016-10-06 21:04:18.855369676 +0000
 @@ -402,7 +402,7 @@
      {
          QString term = QString::fromLocal8Bit(qgetenv("TERM"));
