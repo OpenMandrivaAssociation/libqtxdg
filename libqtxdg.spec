@@ -38,6 +38,7 @@ Patch100: libqtxdg-1.1.0-use-xvt.patch
 BuildRequires: cmake
 BuildRequires: qmake5
 BuildRequires: cmake(Qt5LinguistTools)
+BuildRequires: cmake(lxqt-build-tools) >= 0.6.0
 BuildRequires: ninja
 BuildRequires: cmake(Qt5Widgets)
 BuildRequires: cmake(Qt5Xml)
