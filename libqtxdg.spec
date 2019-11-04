@@ -10,23 +10,23 @@
 %global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version: 3.3.1
+Version:	3.4.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 1
+Release:	1
 Source0: https://github.com/lxde/libqtxdg/archive/%{version}.tar.gz
 %else
-Release: 0.%{scmrev}.1
+Release:	1
 # git clone https://github.com/lxde/libqtxdg.git
 # git archive --format=tar --prefix libqtxdg-1.0.0-$(date +%Y%m%d)/ HEAD | xz -vf > libqtxdg-1.0.0-$(date +%Y%m%d).tar.xz
 Source0: %{name}-%{version}-%{scmrev}.tar.xz
 %endif
 %else
 %if "%{scmrev}" == ""
-Release: 0.%{beta}.1
+Release:	1
 Source0: %{name}-%{version}%{beta}.tar.xz
 %else
-Release: 0.%{beta}.%{scmrev}.1
+Release:	1
 Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
@@ -40,6 +40,7 @@ BuildRequires: qmake5
 BuildRequires: cmake(Qt5LinguistTools)
 BuildRequires: cmake(lxqt-build-tools) >= 0.6.0
 BuildRequires: ninja
+BuildRequires: pkgconfig(gio-unix-2.0)
 BuildRequires: cmake(Qt5Widgets)
 BuildRequires: cmake(Qt5Xml)
 BuildRequires: cmake(Qt5DBus)
@@ -88,6 +89,7 @@ freedesktop.org specs implementations for Qt.
 sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
 
 %files -n %{libname}
+%{_bindir}/qtxdg-mat
 %{_libdir}/*.so.%{major}*
 %{_libdir}/qt5/plugins/iconengines/libQt5XdgIconPlugin.so
 
