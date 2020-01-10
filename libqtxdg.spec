@@ -75,7 +75,7 @@ freedesktop.org specs implementations for Qt.
 %else
 %setup -q -n %{name}-%{version}-%{scmrev}
 %endif
-%apply_patches
+%autopatch -p1
 
 %cmake_qt5 -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
 
