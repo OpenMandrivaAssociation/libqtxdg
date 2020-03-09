@@ -13,7 +13,7 @@ Name: libqtxdg
 Version:	3.4.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release:	2
+Release:	3
 Source0: https://github.com/lxde/libqtxdg/archive/%{version}.tar.gz
 %else
 Release:	1
@@ -64,6 +64,7 @@ Summary: Development files for %{name}
 Group: Development/C
 Requires: %{libname} = %{EVRD}
 %rename %{qt4devname}
+Requires: pkgconfig(gio-unix-2.0)
 
 %description -n %{devname}
 Development files (Headers etc.) for %{name}, a library providing
