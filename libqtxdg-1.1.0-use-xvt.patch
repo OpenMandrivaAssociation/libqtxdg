@@ -1,12 +1,12 @@
-diff -Naur libqtxdg-3.3.0/src/qtxdg/xdgdesktopfile.cpp libqtxdg-3.3.0.tpg/src/qtxdg/xdgdesktopfile.cpp
---- libqtxdg-3.3.0/src/qtxdg/xdgdesktopfile.cpp	2016-09-17 12:06:08.000000000 +0000
-+++ libqtxdg-3.3.0.tpg/src/qtxdg/xdgdesktopfile.cpp	2016-10-06 21:04:18.855369676 +0000
-@@ -402,7 +402,7 @@
-     {
-         QString term = QString::fromLocal8Bit(qgetenv("TERM"));
-         if (term.isEmpty())
--            term = QLatin1String("xterm");
-+            term = QLatin1String("xvt");
+diff -up libqtxdg-3.8.0/src/qtxdg/xdgdesktopfile.cpp.1~ libqtxdg-3.8.0/src/qtxdg/xdgdesktopfile.cpp
+--- libqtxdg-3.8.0/src/qtxdg/xdgdesktopfile.cpp.1~	2021-11-05 18:59:19.904633563 +0100
++++ libqtxdg-3.8.0/src/qtxdg/xdgdesktopfile.cpp	2021-11-05 19:00:47.722769314 +0100
+@@ -478,7 +478,7 @@ bool XdgDesktopFileData::startApplicatio
+         else
+         {
+             qWarning() << "XdgDesktopFileData::startApplicationDetached(): Using fallback terminal (xterm).";
+-            terminalCommand = QStringLiteral("xterm");
++            terminalCommand = QStringLiteral("xvt");
+         }
  
-         args.prepend(QLatin1String("-e"));
-         args.prepend(term);
+         delete terminal;

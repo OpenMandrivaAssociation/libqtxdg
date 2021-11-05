@@ -10,7 +10,7 @@
 %global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version:	3.7.0
+Version:	3.8.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
 Release:	1
@@ -93,6 +93,7 @@ sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
 %{_bindir}/qtxdg-mat
 %{_libdir}/*.so.%{major}*
 %{_libdir}/qt5/plugins/iconengines/libQt5XdgIconPlugin.so
+%{_datadir}/lxqt
 
 %files -n %{devname}
 %dir %{_datadir}/cmake/qt5xdg
