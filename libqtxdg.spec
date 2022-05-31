@@ -10,7 +10,7 @@
 %global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version:	3.9.0
+Version:	3.9.1
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
 Release:	1
@@ -89,11 +89,14 @@ freedesktop.org specs implementations for Qt.
 # Fix up the pkgconfig file...
 sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
 
+# We prefer qterminal over xterm even when not using LXQt
+sed -i -e 's,xterm,qterminal,g' %{buildroot}%{_sysconfdir}/xdg/qtxdg.conf
+
 %files -n %{libname}
-%{_bindir}/qtxdg-mat
 %{_libdir}/*.so.%{major}*
 %{_libdir}/qt5/plugins/iconengines/libQt5XdgIconPlugin.so
-%{_datadir}/lxqt
+%{_sysconfdir}/xdg/lxqt-qtxdg.conf
+%{_sysconfdir}/xdg/qtxdg.conf
 
 %files -n %{devname}
 %dir %{_datadir}/cmake/qt5xdg
