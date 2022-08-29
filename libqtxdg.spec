@@ -10,23 +10,23 @@
 %global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version:	3.9.1
+Version: 3.9.1
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release:	1
-Source0: https://github.com/lxde/libqtxdg/archive/%{version}.tar.gz
+Release: 2
+Source0: https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
 %else
-Release:	1
+Release: 1
 # git clone https://github.com/lxde/libqtxdg.git
 # git archive --format=tar --prefix libqtxdg-1.0.0-$(date +%Y%m%d)/ HEAD | xz -vf > libqtxdg-1.0.0-$(date +%Y%m%d).tar.xz
 Source0: %{name}-%{version}-%{scmrev}.tar.xz
 %endif
 %else
 %if "%{scmrev}" == ""
-Release:	1
+Release: 1
 Source0: %{name}-%{version}%{beta}.tar.xz
 %else
-Release:	1
+Release: 1
 Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
@@ -34,6 +34,8 @@ Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
+Patch0: https://github.com/lxqt/libqtxdg/commit/cfa3c150805a26224dbe13bdab0102292c52c6b8.patch
+Patch1: https://github.com/lxqt/libqtxdg/commit/3909ad12af018b2c4e1452bac2de2e3b2e3b69fd.patch
 Patch100: libqtxdg-1.1.0-use-xvt.patch
 BuildRequires: cmake
 BuildRequires: qmake5
@@ -72,11 +74,10 @@ freedesktop.org specs implementations for Qt.
 
 %prep
 %if "%{scmrev}" == ""
-%setup -q -n %{name}-%{version}%{beta}
+%autosetup -p1 -n %{name}-%{version}%{beta}
 %else
-%setup -q -n %{name}-%{version}-%{scmrev}
+%autosetup -p1 -n %{name}-%{version}-%{scmrev}
 %endif
-%autopatch -p1
 
 %cmake_qt5 -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
 
