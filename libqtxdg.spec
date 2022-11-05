@@ -1,7 +1,8 @@
 %define major 3
 %define beta %{nil}
 %define scmrev %{nil}
-%define libname %mklibname qt5xdg %{major}
+%define libname %mklibname qt5xdg
+%define oldlibname %mklibname qt5xdg 3
 %define devname %mklibname qt5xdg -d
 
 %define qt4libname %mklibname qtxdg %{major}
@@ -10,10 +11,10 @@
 %global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version: 3.9.1
+Version: 3.10.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 2
+Release: 1
 Source0: https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
 %else
 Release: 1
@@ -34,8 +35,6 @@ Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
-Patch0: https://github.com/lxqt/libqtxdg/commit/cfa3c150805a26224dbe13bdab0102292c52c6b8.patch
-Patch1: https://github.com/lxqt/libqtxdg/commit/3909ad12af018b2c4e1452bac2de2e3b2e3b69fd.patch
 Patch100: libqtxdg-1.1.0-use-xvt.patch
 BuildRequires: cmake
 BuildRequires: qmake5
@@ -57,6 +56,7 @@ Library providing freedesktop.org specs implementations for Qt.
 Summary: Library providing freedesktop.org specs implementations for Qt
 Group: System/Libraries
 %rename %{qt4libname}
+%rename %{oldlibname}
 
 %description -n %{libname}
 Library providing freedesktop.org specs implementations for Qt.
