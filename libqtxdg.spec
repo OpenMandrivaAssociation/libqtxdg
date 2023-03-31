@@ -14,20 +14,20 @@ Name: libqtxdg
 Version: 3.10.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
-Release: 1
+Release: 2
 Source0: https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
 %else
-Release: 1
+Release: 2
 # git clone https://github.com/lxde/libqtxdg.git
 # git archive --format=tar --prefix libqtxdg-1.0.0-$(date +%Y%m%d)/ HEAD | xz -vf > libqtxdg-1.0.0-$(date +%Y%m%d).tar.xz
 Source0: %{name}-%{version}-%{scmrev}.tar.xz
 %endif
 %else
 %if "%{scmrev}" == ""
-Release: 1
+Release: 2
 Source0: %{name}-%{version}%{beta}.tar.xz
 %else
-Release: 1
+Release: 2
 Source0: %{name}-%{scmrev}.tar.xz
 %endif
 %endif
