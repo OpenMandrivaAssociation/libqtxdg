@@ -11,7 +11,7 @@
 %global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version: 3.11.0
+Version: 3.12.0
 %if "%{beta}" == ""
 %if "%{scmrev}" == ""
 Release: 1
