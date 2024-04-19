@@ -1,49 +1,30 @@
-%define major 3
-%define beta %{nil}
-%define scmrev %{nil}
-%define libname %mklibname qt5xdg
-%define oldlibname %mklibname qt5xdg 3
-%define devname %mklibname qt5xdg -d
+%define major 4
+#define beta %{nil}
+#define scmrev %{nil}
+%define libname %mklibname Qt6Xdg
+%define devname %mklibname Qt6Xdg -d
 
-%define qt4libname %mklibname qtxdg %{major}
-%define qt4devname %mklibname qtxdg -d
-
-%global __requires_exclude ^cmake.*XdgIconLoader.*$
+#global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version: 3.12.0
-Release: %{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}2
-%if "%{beta}" == ""
-%if "%{scmrev}" == ""
+Version: 4.0.0
+Release: %{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}1
 Source0: https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
-%else
-# git clone https://github.com/lxde/libqtxdg.git
-# git archive --format=tar --prefix libqtxdg-1.0.0-$(date +%Y%m%d)/ HEAD | xz -vf > libqtxdg-1.0.0-$(date +%Y%m%d).tar.xz
-Source0: %{name}-%{version}-%{scmrev}.tar.xz
-%endif
-%else
-%if "%{scmrev}" == ""
-Source0: %{name}-%{version}%{beta}.tar.xz
-%else
-Source0: %{name}-%{scmrev}.tar.xz
-%endif
-%endif
 Summary: Library providing freedesktop.org specs implementations for Qt
 URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
 Patch100: libqtxdg-1.1.0-use-xvt.patch
 BuildRequires: cmake
-BuildRequires: qmake5
-BuildRequires: cmake(Qt5LinguistTools)
-BuildRequires: cmake(lxqt-build-tools) >= 0.6.0
+BuildRequires: cmake(Qt6LinguistTools)
+BuildRequires: cmake(lxqt2-build-tools) >= 0.6.0
 BuildRequires: ninja
 BuildRequires: pkgconfig(gio-unix-2.0)
-BuildRequires: cmake(Qt5Widgets)
-BuildRequires: cmake(Qt5Xml)
-BuildRequires: cmake(Qt5DBus)
-BuildRequires: cmake(Qt5Test)
-BuildRequires: cmake(Qt5Svg)
+BuildRequires: cmake(Qt6Widgets)
+BuildRequires: cmake(Qt6Xml)
+BuildRequires: cmake(Qt6DBus)
+BuildRequires: cmake(Qt6Test)
+BuildRequires: cmake(Qt6Svg)
 %rename %{name}-data
 
 %description
@@ -52,8 +33,6 @@ Library providing freedesktop.org specs implementations for Qt.
 %package -n %{libname}
 Summary: Library providing freedesktop.org specs implementations for Qt
 Group: System/Libraries
-%rename %{qt4libname}
-%rename %{oldlibname}
 
 %description -n %{libname}
 Library providing freedesktop.org specs implementations for Qt.
@@ -62,7 +41,6 @@ Library providing freedesktop.org specs implementations for Qt.
 Summary: Development files for %{name}
 Group: Development/C
 Requires: %{libname} = %{EVRD}
-%rename %{qt4devname}
 Requires: pkgconfig(gio-unix-2.0)
 
 %description -n %{devname}
@@ -70,13 +48,8 @@ Development files (Headers etc.) for %{name}, a library providing
 freedesktop.org specs implementations for Qt.
 
 %prep
-%if "%{scmrev}" == ""
-%autosetup -p1 -n %{name}-%{version}%{beta}
-%else
-%autosetup -p1 -n %{name}-%{version}-%{scmrev}
-%endif
-
-%cmake_qt5 -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
+%autosetup -p1 -n %{name}-%{version}%{?beta:%{beta}}
+%cmake -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
 
 %build
 %ninja -C build
@@ -92,15 +65,15 @@ sed -i -e 's,xterm,qterminal,g' %{buildroot}%{_sysconfdir}/xdg/qtxdg.conf
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}*
-%{_libdir}/qt5/plugins/iconengines/libQt5XdgIconPlugin.so
+%{_libdir}/qt6/plugins/iconengines/libQt6XdgIconPlugin.so
 %{_sysconfdir}/xdg/lxqt-qtxdg.conf
 %{_sysconfdir}/xdg/qtxdg.conf
 
 %files -n %{devname}
-%dir %{_datadir}/cmake/qt5xdg
-%dir %{_datadir}/cmake/qt5xdgiconloader
+%dir %{_datadir}/cmake/qt6xdg
+%dir %{_datadir}/cmake/qt6xdgiconloader
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*
-%{_datadir}/cmake/qt5xdg/*.cmake
-%{_datadir}/cmake/qt5xdgiconloader/*.cmake
+%{_datadir}/cmake/qt6xdg/*.cmake
+%{_datadir}/cmake/qt6xdgiconloader/*.cmake
