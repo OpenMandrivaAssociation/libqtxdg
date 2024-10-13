@@ -15,6 +15,7 @@ URL: http://lxqt.org/
 License: GPL
 Group: System/Libraries
 Patch100: libqtxdg-1.1.0-use-xvt.patch
+Patch101: https://github.com/lxqt/libqtxdg/commit/91ed8fd47a6022265ac0a692413a7f02b767369d.patch
 BuildRequires: cmake
 BuildRequires: cmake(Qt6LinguistTools)
 BuildRequires: cmake(lxqt2-build-tools) >= 0.6.0
