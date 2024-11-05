@@ -7,15 +7,14 @@
 #global __requires_exclude ^cmake.*XdgIconLoader.*$
 
 Name: libqtxdg
-Version: 4.0.0
-Release: %{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}2
+Version: 4.1.0
+Release: %{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}1
 Source0: https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
 Summary: Library providing freedesktop.org specs implementations for Qt
 URL: https://lxqt.org/
 License: GPL
 Group: System/Libraries
 Patch100: libqtxdg-1.1.0-use-xvt.patch
-Patch101: https://github.com/lxqt/libqtxdg/commit/91ed8fd47a6022265ac0a692413a7f02b767369d.patch
 BuildRequires: cmake
 BuildRequires: cmake(Qt6LinguistTools)
 BuildRequires: cmake(lxqt2-build-tools) >= 0.6.0
