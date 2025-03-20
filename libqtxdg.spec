@@ -6,26 +6,28 @@
 
 #global __requires_exclude ^cmake.*XdgIconLoader.*$
 
-Name: libqtxdg
-Version: 4.1.0
-Release: %{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}2
-Source0: https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
-Summary: Library providing freedesktop.org specs implementations for Qt
-URL: https://lxqt.org/
-License: GPL
-Group: System/Libraries
-Patch100: libqtxdg-1.1.0-use-xvt.patch
-BuildRequires: cmake
-BuildRequires: cmake(Qt6LinguistTools)
-BuildRequires: cmake(lxqt2-build-tools) >= 0.6.0
-BuildRequires: ninja
-BuildRequires: pkgconfig(gio-unix-2.0)
-BuildRequires: cmake(Qt6Widgets)
-BuildRequires: cmake(Qt6Xml)
-BuildRequires: cmake(Qt6DBus)
-BuildRequires: cmake(Qt6Test)
-BuildRequires: cmake(Qt6Svg)
+Name:		libqtxdg
+Version:	4.1.0
+Release:	%{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}3
+Source0:	https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
+Summary:	Library providing freedesktop.org specs implementations for Qt
+URL:		https://lxqt-project.org/
+License:	GPL
+Group:		System/Libraries
+BuildSystem:	cmake
+BuildRequires:	cmake(Qt6LinguistTools)
+BuildRequires:	cmake(lxqt2-build-tools) >= 0.6.0
+BuildRequires:	pkgconfig(gio-unix-2.0)
+BuildRequires:	cmake(Qt6Widgets)
+BuildRequires:	cmake(Qt6Xml)
+BuildRequires:	cmake(Qt6DBus)
+BuildRequires:	cmake(Qt6Test)
+BuildRequires:	cmake(Qt6Svg)
 %rename %{name}-data
+
+%patchlist
+libqtxdg-1.1.0-use-xvt.patch
+https://github.com/lxqt/libqtxdg/commit/35ce74f1510a9f41b2aff82fd1eda63014c3fe2b.patch
 
 %description
 Library providing freedesktop.org specs implementations for Qt.
@@ -47,16 +49,7 @@ Requires: pkgconfig(gio-unix-2.0)
 Development files (Headers etc.) for %{name}, a library providing
 freedesktop.org specs implementations for Qt.
 
-%prep
-%autosetup -p1 -n %{name}-%{version}%{?beta:%{beta}}
-%cmake -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
-
-%build
-%ninja -C build
-
-%install
-%ninja_install -C build
-
+%install -a
 # Fix up the pkgconfig file...
 sed -i -e 's,\${prefix}/,,g' "%{buildroot}"%{_libdir}/pkgconfig/*.pc
 
