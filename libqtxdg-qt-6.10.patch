@@ -1,0 +1,23 @@
+diff -up libqtxdg-4.2.0/CMakeLists.txt.omv~ libqtxdg-4.2.0/CMakeLists.txt
+--- libqtxdg-4.2.0/CMakeLists.txt.omv~	2025-10-11 22:52:48.344099039 +0200
++++ libqtxdg-4.2.0/CMakeLists.txt	2025-10-11 22:54:07.744443315 +0200
+@@ -47,6 +47,7 @@ if (BUILD_TESTS)
+     find_package(Qt6 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Test)
+ endif()
+ 
++find_package(Qt6 ${QT_MINIMUM_VERSION} CONFIG REQUIRED GuiPrivate)
+ 
+ set(QTXDGX_LIBRARY_NAME "Qt6Xdg")
+ set(QTXDGX_FILE_NAME "qt6xdg")
+diff -up libqtxdg-4.2.0/src/CMakeLists.txt.omv~ libqtxdg-4.2.0/src/CMakeLists.txt
+diff -up libqtxdg-4.2.0/src/xdgiconloader/CMakeLists.txt.omv~ libqtxdg-4.2.0/src/xdgiconloader/CMakeLists.txt
+--- libqtxdg-4.2.0/src/xdgiconloader/CMakeLists.txt.omv~	2025-10-11 22:54:20.176270965 +0200
++++ libqtxdg-4.2.0/src/xdgiconloader/CMakeLists.txt	2025-10-11 22:54:30.206546129 +0200
+@@ -52,6 +52,7 @@ target_include_directories(${QTXDGX_ICON
+ target_link_libraries(${QTXDGX_ICONLOADER_LIBRARY_NAME}
+     PUBLIC
+         Qt6::Gui
++	Qt6::GuiPrivate
+         Qt6::Svg
+ )
+ 

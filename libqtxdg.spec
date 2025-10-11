@@ -8,7 +8,7 @@
 
 Name:		libqtxdg
 Version:	4.2.0
-Release:	%{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}1
+Release:	%{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}2
 Source0:	https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
 Summary:	Library providing freedesktop.org specs implementations for Qt
 URL:		https://lxqt-project.org/
@@ -27,6 +27,7 @@ BuildRequires:	cmake(Qt6Svg)
 
 %patchlist
 libqtxdg-1.1.0-use-xvt.patch
+libqtxdg-qt-6.10.patch
 
 %description
 Library providing freedesktop.org specs implementations for Qt.
