@@ -8,7 +8,7 @@
 
 Name:		libqtxdg
 Version:	4.3.0
-Release:	%{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}3
+Release:	%{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}4
 Source0:	https://github.com/lxqt/libqtxdg/archive/%{version}.tar.gz
 Summary:	Library providing freedesktop.org specs implementations for Qt
 URL:		https://lxqt-project.org/
