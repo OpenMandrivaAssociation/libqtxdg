@@ -1,12 +1,14 @@
-diff -up libqtxdg-3.8.0/src/qtxdg/xdgdesktopfile.cpp.1~ libqtxdg-3.8.0/src/qtxdg/xdgdesktopfile.cpp
---- libqtxdg-3.8.0/src/qtxdg/xdgdesktopfile.cpp.1~	2021-11-05 18:59:19.904633563 +0100
-+++ libqtxdg-3.8.0/src/qtxdg/xdgdesktopfile.cpp	2021-11-05 19:00:47.722769314 +0100
-@@ -478,7 +478,7 @@ bool XdgDesktopFileData::startApplicatio
+diff -up libqtxdg-4.4.0/src/qtxdg/xdgdesktopfile.cpp.1~ libqtxdg-4.4.0/src/qtxdg/xdgdesktopfile.cpp
+--- libqtxdg-4.4.0/src/qtxdg/xdgdesktopfile.cpp.1~	2026-04-20 00:00:00.000000000 +0000
++++ libqtxdg-4.4.0/src/qtxdg/xdgdesktopfile.cpp	2026-04-20 00:00:00.000000000 +0000
+@@ -537,8 +537,8 @@ bool XdgDesktopFileData::startApplicatio
+         }
          else
          {
-             qWarning() << "XdgDesktopFileData::startApplicationDetached(): Using fallback terminal (xterm).";
--            terminalCommand = QStringLiteral("xterm");
-+            terminalCommand = QStringLiteral("xvt");
+-            qWarning() << "XdgDesktopFileData::startApplicationDetached(): Using fallback terminal (xterm).";
+-            terminalCommand = u"xterm"_s;
++            qWarning() << "XdgDesktopFileData::startApplicationDetached(): Using fallback terminal (qterminal).";
++            terminalCommand = u"qterminal"_s;
          }
  
          delete terminal;
