@@ -1,3 +1,9 @@
+diff -up libqtxdg-4.4.0/config/qtxdg.conf.1~ libqtxdg-4.4.0/config/qtxdg.conf
+--- libqtxdg-4.4.0/config/qtxdg.conf.1~	2026-04-20 00:00:00.000000000 +0000
++++ libqtxdg-4.4.0/config/qtxdg.conf	2026-04-20 00:00:00.000000000 +0000
+@@ -1 +1 @@
+-TerminalEmulator=xterm.desktop
++TerminalEmulator=qterminal.desktop
 diff -up libqtxdg-4.4.0/src/qtxdg/xdgdesktopfile.cpp.1~ libqtxdg-4.4.0/src/qtxdg/xdgdesktopfile.cpp
 --- libqtxdg-4.4.0/src/qtxdg/xdgdesktopfile.cpp.1~	2026-04-20 00:00:00.000000000 +0000
 +++ libqtxdg-4.4.0/src/qtxdg/xdgdesktopfile.cpp	2026-04-20 00:00:00.000000000 +0000
