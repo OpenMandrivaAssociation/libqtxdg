@@ -5,15 +5,15 @@
 %define devname %mklibname Qt6Xdg -d
 
 Name:		libqtxdg
-Version:	4.4.0
-Release:	%{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}3
+Version:	4.5.0
+Release:	%{?beta:0.%{beta}.}%{?scmrev:0.%{scmrev}.}1
 Source0:	https://github.com/lxqt/libqtxdg/releases/download/%{version}/libqtxdg-%{version}.tar.xz
 Summary:	Library providing freedesktop.org specs implementations for Qt
 URL:		https://lxqt-project.org/
 License:	LGPL-2.1+
 Group:		System/Libraries
 BuildSystem:	cmake
-BuildRequires:	cmake(lxqt2-build-tools) >= 2.4.0
+BuildRequires:	cmake(lxqt2-build-tools) >= 2.5.0
 BuildRequires:	pkgconfig(gio-unix-2.0)
 BuildRequires:	cmake(Qt6Widgets)
 BuildRequires:	cmake(Qt6Xml)
